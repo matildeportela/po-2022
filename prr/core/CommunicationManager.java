@@ -1,21 +1,30 @@
 package prr.core; 
 
-public class ComminicationManager{
+import java.util.Collection;
+
+public class CommunicationManager
+{
+
     public Collection <Communication> getCommunications(){
         //todo
     }
-    public Collection <Communication> getAllFromClient(string clientKey){
+
+    public Collection <Communication> getAllFromClient(String clientKey){
         //todo
     }
-    public Collection <Communication> getAllFromTerminal(string terminalId){
+
+    public Collection <Communication> getAllFromTerminal(String terminalId){
         //todo
     }
-    public Collection <Communication> getAllToClient(string clientKey){
+
+    public Collection <Communication> getAllToClient(String clientKey){
         //todo
     }
-    public Collection <Communication> getAllToTerminal(string terminalId){
+
+    public Collection <Communication> getAllToTerminal(String terminalId){
         //todo
     }
+
     public boolean addCommunication(Communication communication){
         //todo
     }

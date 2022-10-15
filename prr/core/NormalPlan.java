@@ -1,6 +1,7 @@
 package prr.core;
 
-public class NormalPlan extends Plan{
+public class NormalPlan extends Plan
+{
     
     public float getTextCost(int length){
         //todo

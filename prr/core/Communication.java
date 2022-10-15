@@ -1,5 +1,11 @@
 package prr.core;
 
+enum CommunicationType{
+    Video,
+    Text,
+    Voice
+}
+
 public abstract class Communication{
     private int _id;
     private Terminal _origin;
@@ -15,34 +21,39 @@ public abstract class Communication{
         _ongoing = ongoing;
         _type = type;
     }
+    
     public void write (String sms){
         //todo
     }
+    
     public float getCommunicationCost(){
         return _communicationCost;
     }
+    
     public int getId(){
         return _id;
     }
+    
     public Terminal getOrigin(){
         return _origin;
     }
+    
     public Terminal getDestination(){
         return _destination;
-    }    
+    }
+
     public void setType(CommunicationType communicationType){
         _type = communicationType;
-    }    
-    public communicationType getType(){
+    }
+
+    public CommunicationType getType(){
         return _type;
     }
+
     public String toString(){
+        //TODO: falta fazer
     }
 }
 
 
-enum communicationType{
-    Video
-    Text
-    Voice
-}
+
