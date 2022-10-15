@@ -42,7 +42,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   }
 
   public boolean isOff(){
-    
+    return true; //todo
   }
 
   public String getId(){
@@ -68,6 +68,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
    **/
   public boolean canEndCurrentCommunication() {
     // FIXME add implementation code
+    return true;
   }
   
   /**
@@ -77,5 +78,6 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
    **/
   public boolean canStartCommunication() {
     // FIXME add implementation code
+    return true;
   }
 }

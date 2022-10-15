@@ -2,9 +2,10 @@ package prr.core;
 
 public abstract class Plan
 {
+    protected PlanType _planType;
 
     public PlanType getPlanType(){
-        //todo
+        return _planType;
     }
 
     public void TextCost(String sms){

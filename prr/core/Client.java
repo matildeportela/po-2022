@@ -49,13 +49,13 @@ public class Client {
     public boolean addTerminal(Terminal t){
         _terminalList = new HashSet<Terminal>();
         _terminalList.add(t);
-
+        return true;
     }
 
     public Set<Terminal> getTerminalList(){
         return _terminalList;
     }
 
-    
+
     
 }

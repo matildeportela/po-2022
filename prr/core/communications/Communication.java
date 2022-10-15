@@ -1,4 +1,6 @@
-package prr.core;
+package prr.core.communications;
+
+import prr.core.Terminal;
 
 enum CommunicationType{
     Video,
@@ -21,7 +23,7 @@ public abstract class Communication{
         _ongoing = ongoing;
         _type = type;
     }
-    
+
     public void write (String sms){
         //todo
     }
@@ -51,7 +53,7 @@ public abstract class Communication{
     }
 
     public String toString(){
-        //TODO: falta fazer
+        return ""; //TODO: falta fazer   
     }
 }
 
