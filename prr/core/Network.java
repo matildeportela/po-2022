@@ -56,7 +56,7 @@ public class Network implements Serializable {
         return c;
       }
     }
-    //TODO: o que é que retorna se não encontra cliente? lança
+    return new Client("", "", 0); //TODO: o que é que retorna se não encontra cliente? lança
   }
   
   /**
