@@ -1,7 +1,7 @@
-import java.util.HashSet;
-import java.util.Set;;
+package prr.core;
 
-package projeto;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Network{
     private double _balance;

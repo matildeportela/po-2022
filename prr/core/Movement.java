@@ -1,4 +1,4 @@
-package projeto;
+package prr.core;
 
 public class Movement {
     private String _idTerminal;

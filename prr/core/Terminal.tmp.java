@@ -1,4 +1,5 @@
-package projeto;
+package prr.core;
+
 import java.util.HashSet;
 
 

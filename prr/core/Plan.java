@@ -1,3 +1,5 @@
+package prr.core;
+
 public abstract class Plan{
 
     public PlanType getPlanType(){

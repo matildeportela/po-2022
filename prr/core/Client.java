@@ -1,9 +1,9 @@
+package prr.core;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
-
-package projeto;
 
 public class Client {
     private String _key;

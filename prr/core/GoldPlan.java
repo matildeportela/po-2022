@@ -1,3 +1,5 @@
+package prr.core;
+
 public class GoldPlan extends Plan{
     
     public float getTextCost(int length){

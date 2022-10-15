@@ -1,3 +1,4 @@
+package prr.core; 
 
 public class ComminicationManager{
     public Collection <Communication> getCommunications(){

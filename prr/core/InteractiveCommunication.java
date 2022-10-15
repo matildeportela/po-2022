@@ -1,3 +1,4 @@
+package prr.core;
 
 public class InteractiveCommunication extends Communication{
     private int _communicationDuration;
