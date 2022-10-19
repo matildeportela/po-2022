@@ -56,6 +56,16 @@ public class Client {
         return _terminalList;
     }
 
+    public String toString(){
+        ArrayList<String> parts = new ArrayList<String>();
+        parts.add("CLIENT");
+        parts.add(getKey());
+        parts.add(getName());
+        //...   TODO faltam os outros attributos
+        
+        String str = String.join("|", parts);
 
+        return str;
+    }
     
 }

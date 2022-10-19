@@ -1,0 +1,9 @@
+Compilar:
+
+javac -cp po-uilib.jar:. `find prr -name "*.java"`
+
+
+Executar:
+
+java -cp po-uilib.jar:. -Dimport="import.txt" prr.app.App
+

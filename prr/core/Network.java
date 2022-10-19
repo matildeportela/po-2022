@@ -2,6 +2,9 @@ package prr.core;
 
 import java.io.Serializable;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
 import prr.core.exception.UnrecognizedEntryException;
@@ -59,6 +62,50 @@ public class Network implements Serializable {
     return new Client("", "", 0); //TODO: o que é que retorna se não encontra cliente? lança
   }
   
+
+  private void parseLineFromImportFile(String line) throws UnrecognizedEntryException{
+      //
+      System.out.println("[---");
+      System.out.println("parsar linha: " + line);
+      
+      // extrair o primeiro elemento (até à |) ... CLIENT, BASIC, FANCY, FRIENDS,... 
+      String parts[] = line.split("\\|");
+
+      //System.out.println("part[0]:"+parts[0] + "part[1]:"+parts[1]);
+
+      switch(parts[0]){
+        case "CLIENT": 
+          createClientFromImportLineParts(parts);
+          break;
+        case  "BASIC":
+        case  "FANCY":
+          //parseTerminalLine(parts);
+          break;
+        case "FRIENDS":
+          //parseFriendsLine(parts);
+          break;
+        default:
+          throw new UnrecognizedEntryException("Not a valid line type");
+        
+      }
+
+      System.out.println("---]");
+  }
+
+  private void createClientFromImportLineParts(String[] parts)  {
+
+    //TODO: validar as parts antes de criar o cliente
+
+    //criar novo client com os dados que recebemos no parts
+    Client client = new Client(parts[1], parts[2], Integer.parseInt(parts[3]));
+
+    //adicionar este novo client à network
+    addClient(client);
+
+    System.out.println("client.tostring: " + client.toString());
+    //System.out.println("Added Client:" + parts[1] +", "+ parts[2] +", "+ parts[3]);
+
+  }
   /**
    * Read text input file and create corresponding domain entities.
    * 
@@ -68,6 +115,36 @@ public class Network implements Serializable {
    */
   void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
     //FIXME implement method
+    System.out.println("IMPORT FILE: " + filename);
+
+    //tentar abrir o ficheiro filename (read)... lançar exception IOException se nao conseguir
+    try {
+      File file = new File(filename);
+      Scanner fileReader = new Scanner(file);
+      while(fileReader.hasNextLine()){
+        String line = fileReader.nextLine();
+        
+
+        //parse line e criar os objects respectivos... se falhar lança UnrecognizedEntryException
+        parseLineFromImportFile(line);
+
+
+      }
+      fileReader.close();
+    } catch (UnrecognizedEntryException e) {
+      System.out.println("Erro: UnrecognizedEntryException");
+      e.printStackTrace();
+    } catch (Exception e) {
+      System.out.println("Erro");
+      e.printStackTrace();
+    }
+
+    //interpretar o ficheiro (parse)... lançar exception UnrecognizedEntryException se falhar alguma entrada
+
+
+    //construir a rede, clientes, terminais conforme as instruções do ficheiro
+
+
   }
 }
 
