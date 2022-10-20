@@ -2,7 +2,12 @@ package prr.core;
 
 import java.io.Serializable;
 import java.util.HashSet;
-
+enum TerminalState{
+  IDLE,
+  OFF,
+  SILENT,
+  OCCUPIED
+}
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
@@ -18,6 +23,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   private double _payment;
   private double _debt;
   private HashSet<Terminal> _friends;
+  private TerminalState _state;
 
   // FIXME define contructor(s)
   public Terminal(String id){
@@ -25,6 +31,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     _payment = 0;
     _debt = 0;
     _friends = new HashSet<Terminal>();
+    _state = TerminalState.IDLE;
   }
   
   // FIXME define methods
@@ -32,6 +39,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     return _payment;
     
   }
+  
 
   public double getTerminalDebs(){
     return _debt;
@@ -42,7 +50,10 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   }
 
   public boolean isOff(){
-    return true; //todo
+    if(_state == TerminalState.OFF ){
+      return true;
+    }
+    return false;
   }
 
   public String getId(){

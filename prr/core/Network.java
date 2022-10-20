@@ -1,5 +1,6 @@
 package prr.core;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 import java.io.IOException;
 import java.io.File;
@@ -21,14 +22,14 @@ public class Network implements Serializable {
   
   // FIXME define attributes
   private double _balance;
-  private HashSet<Client> _clientList;
+  private List<Client> _clientList;
   private double _payment;
   private double _debt;
 
 
   // FIXME define contructor(s)
   public Network(){
-      _clientList = new HashSet<Client> () ;
+      _clientList = new ArrayList<Client> () ;
   }
 
   // FIXME define methods
@@ -49,7 +50,7 @@ public class Network implements Serializable {
     
   }
 
-  public Set<Client> getClients(){
+  public List<Client> getClients(){
     return _clientList;
   }
 
@@ -95,6 +96,7 @@ public class Network implements Serializable {
   private void createClientFromImportLineParts(String[] parts)  {
 
     //TODO: validar as parts antes de criar o cliente
+    
 
     //criar novo client com os dados que recebemos no parts
     Client client = new Client(parts[1], parts[2], Integer.parseInt(parts[3]));
