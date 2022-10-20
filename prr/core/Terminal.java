@@ -40,13 +40,6 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     
   }
 
-  public void setOnSilent() {
-    //todo...
-  }
-  
-  public void turnOff() {
-    //todo...
-  }
 
   public double getTerminalDebs(){
     return _debt;
@@ -57,7 +50,10 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   }
 
   public boolean isOff(){
-    return (_state == TerminalState.OFF);
+    if(_state == TerminalState.OFF ){
+      return true;
+    }
+    return false;
   }
 
   public String getId(){
@@ -74,6 +70,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     }
     return false;
   }
+  
   
   /**
    * Checks if this terminal can end the current interactive communication.
@@ -96,3 +93,4 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     return true;
   }
 }
+

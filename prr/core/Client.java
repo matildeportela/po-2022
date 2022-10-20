@@ -3,10 +3,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-
-import prr.core.exception.RegisterTerminalException;
-import prr.core.exception.UnrecognizedEntryException;
-
 import java.util.HashSet;
 enum ClientType{
     NORMAL,
@@ -24,6 +20,8 @@ public class Client {
     private double _balance;
     private List<Terminal> _terminalList;
     private ClientType _type;
+    private String _client;
+    private List<Terminal> _unactiveTerminals;
     
     
     public Client(String key, String name, int fiscalNumber){
@@ -69,60 +67,36 @@ public class Client {
         return true;
     }
 
-    public Terminal registerTerminal(String terminalType, String terminalId) throws UnrecognizedEntryException {
-        Terminal terminal;
-        //todo: verificar se é necessário confirmar a existencia desse terminalId e se já existir trow exception
-
-        switch (terminalType) {
-            case "BASIC" -> terminal = new BasicTerminal(terminalId);
-            case "FANCY" -> terminal = new FancyTerminal(terminalId);
-            default -> throw new UnrecognizedEntryException("terminalType");
-        } 
-
-        return terminal;
-    }
-
     public List<Terminal> getTerminalList(){
         return _terminalList;
     }
-
     public List<Terminal> getUnactiveTerminals(){
-        List<Terminal> unactiveTerminals = new ArrayList<Terminal> ();
+        _unactiveTerminals = new ArrayList<Terminal> ();
         for(Terminal i : _terminalList){
             if(i.isOff()){
-                unactiveTerminals.add(i);
+                _unactiveTerminals.add(i);
             }
-        }
-        return unactiveTerminals;
-    }
 
-    public int getActiveTerminalsCount(){
-        int activeTerminalsCount;
-        
-        activeTerminalsCount = _terminalList.size() - getUnactiveTerminals().size();
-        return activeTerminalsCount;
+        }
+        return _unactiveTerminals;
     }
-    
+    public int getActiveTerminals(){
+        int _activeTerminals;
+        
+        _activeTerminals = _terminalList.size() - _unactiveTerminals.size();
+        return _activeTerminals;
+    }
     public String getNotification(){
         return _notifications;
     }
 
-    
 
     public String getClientString(){
         
-        String client = 
-            "CLIENT"+"|"+
-            getKey()+"|"+
-            getName()+"|"+ 
-            getFiscalNumber()+ "|" + 
-            getType() + "|" + 
-            getNotification()+ "|"+
-            getActiveTerminalsCount()+"|"+ 
-            getClientPayment()+"|"+ 
-            getClientDebt();
+        _client = ("CLIENT"+"|"+getKey()+"|"+getName()+"|"+ getFiscalNumber()+ "|" + getType() + "|" + getNotification()+ "|"+getActiveTerminals()+"|"+ getClientPayment()+"|"+ getClientDebt());
+       
 
-        return client;
+        return _client;
     }
     
 }

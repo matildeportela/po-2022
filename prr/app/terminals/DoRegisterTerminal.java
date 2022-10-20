@@ -15,11 +15,14 @@ class DoRegisterTerminal extends Command<Network> {
 
   DoRegisterTerminal(Network receiver) {
     super(Label.REGISTER_TERMINAL, receiver);
+    addStringField("key", Message.terminalKey());
     //FIXME add command fields
   }
 
   @Override
   protected final void execute() throws CommandException {
     //FIXME implement command
+    var key = stringField("key");
+    catch
   }
 }
