@@ -50,10 +50,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   }
 
   public boolean isOff(){
-    if(_state == TerminalState.OFF ){
-      return true;
-    }
-    return false;
+    return (_state == TerminalState.OFF);
   }
 
   public String getId(){

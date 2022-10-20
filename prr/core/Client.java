@@ -90,13 +90,22 @@ public class Client {
         return _notifications;
     }
 
+    
 
     public String getClientString(){
         
-        _client = ("CLIENT"+"|"+getKey()+"|"+getName()+"|"+ getFiscalNumber()+ "|" + getType() + "|" + getNotification()+ "|"+getActiveTerminals()+"|"+ getClientPayment()+"|"+ getClientDebt());
-       
+        String client = 
+            "CLIENT"+"|"+
+            getKey()+"|"+
+            getName()+"|"+ 
+            getFiscalNumber()+ "|" + 
+            getType() + "|" + 
+            getNotification()+ "|"+
+            getActiveTerminals()+"|"+ 
+            getClientPayment()+"|"+ 
+            getClientDebt();
 
-        return _client;
+        return client;
     }
     
 }
