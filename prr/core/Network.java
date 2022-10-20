@@ -62,7 +62,7 @@ public class Network implements Serializable {
 
   public Client getClient(String key) throws ClientNotFoundException {
     for(Client c : _clientList){
-      if(key == c.getKey()){
+      if(key.equals(c.getKey())){
         return c;
       }
     }
@@ -71,7 +71,8 @@ public class Network implements Serializable {
 
   public Boolean hasClient(String key) {
     for(Client c : _clientList){
-      if(key == c.getKey()){
+
+      if(key.equals(c.getKey())){
         return true;
       }
     }
@@ -100,7 +101,7 @@ public class Network implements Serializable {
 
   public boolean hasTerminal(String key) {
     for(Terminal t : _allTerminals){
-      if(key == t.getId()) {
+      if(key.equals(t.getId())) {
         return true;
       }
     }
@@ -109,7 +110,7 @@ public class Network implements Serializable {
 
   public Terminal getTerminal(String key) throws TerminalNotFoundException {
     for(Terminal t : _allTerminals){
-      if(key == t.getId()) {
+      if(key.equals(t.getId())) {
         return t;
       }
     }
@@ -120,8 +121,10 @@ public class Network implements Serializable {
 
     Terminal terminal;
     
+    
+
     //procurar cliente com clientId ... se falhar throw exception
-    if(hasClient(clientId)) {
+    if(!hasClient(clientId)) {
       throw new RegisterTerminalException();
     }
 
@@ -130,11 +133,16 @@ public class Network implements Serializable {
       throw new RegisterTerminalException();
     }
 
+
+
+
     switch (terminalType) {
         case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);
         case "FANCY" -> terminal = new FancyTerminal(terminalId, clientId);
         default -> throw new UnrecognizedEntryException("terminalType");
     } 
+
+    addTerminal(terminal);
 
     return terminal;
 
@@ -162,6 +170,15 @@ public class Network implements Serializable {
     parser = new Parser(this);
     parser.parseFile(filename);
 
-  }
-}
+/*     for(Client c : getClients()){
+      System.out.println(c.toString());
+    }
 
+    for(Terminal t : getTerminals()){
+      System.out.println(t.toString());
+    } */
+  }
+
+
+
+}

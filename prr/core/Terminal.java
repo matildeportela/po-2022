@@ -1,19 +1,27 @@
 package prr.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
+import java.util.Collections;
 enum TerminalState{
   IDLE,
   OFF,
   SILENT,
   OCCUPIED
 }
+
+enum TerminalType{
+  BASIC,
+  FANCY
+}
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
  * Abstract terminal.
  */
-abstract public class Terminal implements Serializable /* FIXME maybe addd more interfaces */{
+abstract public class Terminal implements Serializable, Comparable<Terminal> /* FIXME maybe addd more interfaces */{
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202208091753L;
@@ -23,17 +31,19 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   private double _payment;
   private double _debt;
   private String _owner;
-  HashSet<Terminal> _friends;
+  private List<Terminal> _friends;
   private TerminalState _state;
+  private TerminalType _type;
 
   // FIXME define contructor(s)
-  public Terminal(String id, String owner){
+  public Terminal(String id, String owner, TerminalType type){
     _id = id;
     _owner = owner;
     _payment = 0;
     _debt = 0;
-    _friends = new HashSet<Terminal>();
+    _friends = new ArrayList<>();
     _state = TerminalState.IDLE;
+    _type = type;
   }
   
   // FIXME define methods
@@ -54,7 +64,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     }
   } //todo deve lancar excecao caso contrario??
 
-  public double getTerminalDebs(){
+  public double getTerminalDebts(){
     return _debt;
   }
 
@@ -70,6 +80,22 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     return _id;
   }
 
+  public String getOwner(){
+    return _owner;
+  }
+
+  public List<Terminal> getFriends(){
+    return _friends;
+  }
+
+  public TerminalState getTerminalState(){
+    return _state;
+  }
+
+  public TerminalType getType(){
+    return _type;
+  }
+
   public boolean addFriend(Terminal f){
     for(Terminal t : _friends){
       if (t.getId() != f.getId()){
@@ -81,6 +107,20 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     return false;
   }
   
+  public List<String> sortFriendsList(){
+    ArrayList<String> orderedList = new ArrayList<String>();
+    Collections.sort(_friends);
+    for (Terminal t : _friends){
+      String order = t.getId();
+      orderedList.add(order);
+    }
+    return orderedList;
+  }
+  
+
+  public int compareTo(Terminal t) {
+    return Integer.parseInt(_id) - Integer.parseInt(t.getId());
+  }
   /**
    * Checks if this terminal can end the current interactive communication.
    *
@@ -100,5 +140,20 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   public boolean canStartCommunication() {
     // FIXME add implementation code
     return true;
+  }
+
+
+  public String toString() {
+    //todo ... falta
+    String terminalString = 
+    getType() +"|"+
+    getId() +"|"+
+    getOwner() +"|"+
+    getTerminalState() +"|"+
+    getTerminalPayments() +"|"+
+    sortFriendsList();     
+
+
+    return terminalString;
   }
 }

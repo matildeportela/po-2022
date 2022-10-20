@@ -18,16 +18,18 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
     super(Label.OPEN_MENU_TERMINAL, receiver);
     addStringField("key",Message.terminalKey());
     //FIXME add command fields
+
+    //System.out.println("construtor do DoOpenMenuTerminalConsole");
   }
 
   @Override
   protected final void execute() throws UnknownTerminalKeyException {
-      var key = stringField("key");
+      String key = stringField("key");
       Menu main;
-      System.out.println("ee");
+      //System.out.println("execute do DoOpenMenuTerminalConsole");
       try{
-      main = new Menu(_receiver, _receiver.getTerminal(key));
-      main.open();
+        main = new Menu(_receiver, _receiver.getTerminal(key));
+        main.open();
       }
       catch(TerminalNotFoundException e){
         throw new UnknownTerminalKeyException(key);

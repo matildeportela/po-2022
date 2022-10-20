@@ -105,7 +105,7 @@ public class Client {
             getFiscalNumber()+ "|" + 
             getType() + "|" + 
             getNotification()+ "|"+
-            getActiveTerminalsCount()+"|"+ 
+            //getActiveTerminalsCount()+"|"+        //todo...
             getClientPayment()+"|"+ 
             getClientDebt();
 
