@@ -39,7 +39,14 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
     return _payment;
     
   }
+
+  public void setOnSilent() {
+    //todo...
+  }
   
+  public void turnOff() {
+    //todo...
+  }
 
   public double getTerminalDebs(){
     return _debt;
