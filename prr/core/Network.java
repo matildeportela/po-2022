@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
 import prr.core.exception.UnrecognizedEntryException;
+import prr.core.exception.RegisterClientException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -54,13 +55,34 @@ public class Network implements Serializable {
     return _clientList;
   }
 
-  public Client getClient(String key){
+  public Client getClient(String key) throws Exception {
     for(Client c : _clientList){
       if(key == c.getKey()){
         return c;
       }
     }
-    return new Client("", "", 0); //TODO: o que é que retorna se não encontra cliente? lança
+    throw new Exception(); //todo: ver que exception enviar notfound?
+  }
+
+  public Boolean hasClient(String key) {
+    for(Client c : _clientList){
+      if(key == c.getKey()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public void registerClient( String clientKey, String clientName, int clientFiscalNumber ) throws RegisterClientException  {
+    Client client;
+
+    if(hasClient(clientKey)) {
+        throw new RegisterClientException();
+    }
+
+    client = new Client(clientKey, clientName, clientFiscalNumber);
+    addClient(client);
+  
   }
   
 

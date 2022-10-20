@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.util.Collection;
 import java.util.ArrayList;
 
+import prr.core.exception.RegisterClientException;
 import prr.core.exception.UnrecognizedEntryException;
 // import more exception core classes if needed
 
@@ -48,7 +49,7 @@ public class Parser {
   }
 
   private void checkComponentsLength(String[] components, int expectedSize, String line) throws UnrecognizedEntryException {
-    if (component.length != expectedSize)
+    if (components.length != expectedSize)
       throw new UnrecognizedEntryException("Invalid number of fields in line: " + line);
   }
   
@@ -61,7 +62,7 @@ public class Parser {
       _network.registerClient(components[1], components[2], taxNumber);
     } catch (NumberFormatException nfe) {
       throw new UnrecognizedEntryException("Invalid number in line " + line, nfe);
-    } catch (OtherException e) {
+    } catch (RegisterClientException e) {
       throw new UnrecognizedEntryException("Invalid specification in line: " + line, e);
     }
   }

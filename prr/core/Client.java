@@ -20,8 +20,6 @@ public class Client {
     private double _balance;
     private List<Terminal> _terminalList;
     private ClientType _type;
-    private String _client;
-    private List<Terminal> _unactiveTerminals;
     
     
     public Client(String key, String name, int fiscalNumber){
@@ -70,22 +68,24 @@ public class Client {
     public List<Terminal> getTerminalList(){
         return _terminalList;
     }
+
     public List<Terminal> getUnactiveTerminals(){
-        _unactiveTerminals = new ArrayList<Terminal> ();
+        List<Terminal> unactiveTerminals = new ArrayList<Terminal> ();
         for(Terminal i : _terminalList){
             if(i.isOff()){
-                _unactiveTerminals.add(i);
+                unactiveTerminals.add(i);
             }
-
         }
-        return _unactiveTerminals;
+        return unactiveTerminals;
     }
-    public int getActiveTerminals(){
-        int _activeTerminals;
+
+    public int getActiveTerminalsCount(){
+        int activeTerminalsCount;
         
-        _activeTerminals = _terminalList.size() - _unactiveTerminals.size();
-        return _activeTerminals;
+        activeTerminalsCount = _terminalList.size() - getUnactiveTerminals().size();
+        return activeTerminalsCount;
     }
+    
     public String getNotification(){
         return _notifications;
     }
@@ -101,7 +101,7 @@ public class Client {
             getFiscalNumber()+ "|" + 
             getType() + "|" + 
             getNotification()+ "|"+
-            getActiveTerminals()+"|"+ 
+            getActiveTerminalsCount()+"|"+ 
             getClientPayment()+"|"+ 
             getClientDebt();
 
