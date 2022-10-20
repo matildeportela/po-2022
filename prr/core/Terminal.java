@@ -22,12 +22,14 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   private String _id;
   private double _payment;
   private double _debt;
-  private HashSet<Terminal> _friends;
+  private String _owner;
+  HashSet<Terminal> _friends;
   private TerminalState _state;
 
   // FIXME define contructor(s)
-  public Terminal(String id){
+  public Terminal(String id, String owner){
     _id = id;
+    _owner = owner;
     _payment = 0;
     _debt = 0;
     _friends = new HashSet<Terminal>();
@@ -41,12 +43,16 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
   }
 
   public void setOnSilent() {
-    //todo...
-  }
+    if (_state != TerminalState.OFF){
+      _state = TerminalState.SILENT;
+    }
+  } //todo deve lancar excecao caso contrario??
   
   public void turnOff() {
-    //todo...
-  }
+    if (_state != TerminalState.OCCUPIED){
+      _state = TerminalState.OFF;
+    }
+  } //todo deve lancar excecao caso contrario??
 
   public double getTerminalDebs(){
     return _debt;

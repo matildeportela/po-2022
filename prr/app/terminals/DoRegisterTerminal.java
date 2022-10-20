@@ -22,7 +22,8 @@ class DoRegisterTerminal extends Command<Network> {
   @Override
   protected final void execute() throws CommandException {
     //FIXME implement command
-    var key = stringField("key");
-    catch
+    String key;
+    key = stringField("key");
+  
   }
 }

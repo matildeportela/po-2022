@@ -69,19 +69,6 @@ public class Client {
         return true;
     }
 
-    public Terminal registerTerminal(String terminalType, String terminalId) throws UnrecognizedEntryException {
-        Terminal terminal;
-        //todo: verificar se é necessário confirmar a existencia desse terminalId e se já existir trow exception
-
-        switch (terminalType) {
-            case "BASIC" -> terminal = new BasicTerminal(terminalId);
-            case "FANCY" -> terminal = new FancyTerminal(terminalId);
-            default -> throw new UnrecognizedEntryException("terminalType");
-        } 
-
-        return terminal;
-    }
-
     public List<Terminal> getTerminalList(){
         return _terminalList;
     }
@@ -109,7 +96,7 @@ public class Client {
 
     
 
-    public String getClientString(){
+    public String toString(){
         
         String client = 
             "CLIENT"+"|"+
