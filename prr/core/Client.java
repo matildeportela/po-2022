@@ -3,6 +3,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+
+import prr.core.exception.RegisterTerminalException;
+import prr.core.exception.UnrecognizedEntryException;
+
 import java.util.HashSet;
 enum ClientType{
     NORMAL,
@@ -63,6 +67,19 @@ public class Client {
         _terminalList = new ArrayList<Terminal>();
         _terminalList.add(t);
         return true;
+    }
+
+    public Terminal registerTerminal(String terminalType, String terminalId) throws UnrecognizedEntryException {
+        Terminal terminal;
+        //todo: verificar se é necessário confirmar a existencia desse terminalId e se já existir trow exception
+
+        switch (terminalType) {
+            case "BASIC" -> terminal = new BasicTerminal(terminalId);
+            case "FANCY" -> terminal = new FancyTerminal(terminalId);
+            default -> throw new UnrecognizedEntryException("terminalType");
+        } 
+
+        return terminal;
     }
 
     public List<Terminal> getTerminalList(){

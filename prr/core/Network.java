@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.RegisterClientException;
+import prr.core.exception.RegisterTerminalException;
+import prr.core.exception.ClientNotFound;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -55,13 +57,13 @@ public class Network implements Serializable {
     return _clientList;
   }
 
-  public Client getClient(String key) throws Exception {
+  public Client getClient(String key) throws ClientNotFound {
     for(Client c : _clientList){
       if(key == c.getKey()){
         return c;
       }
     }
-    throw new Exception(); //todo: ver que exception enviar notfound?
+    throw new ClientNotFound();
   }
 
   public Boolean hasClient(String key) {
@@ -85,6 +87,30 @@ public class Network implements Serializable {
   
   }
   
+  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws RegisterTerminalException {
+
+    Client client;
+
+    //procurar cliente com clientId ... se falhar throw exception
+    try {
+      client = getClient(clientId);
+    } catch (ClientNotFound e) {
+      throw new RegisterTerminalException();
+    }
+
+    //regista o terminal no cliente encontrado ... se falhar throw exception
+    try {
+      return client.registerTerminal(terminalType, terminalId);
+    } catch (Exception e) {  //todo....  ver se é necessário distingir as varias exceptions..
+      throw new RegisterTerminalException();  
+    }
+
+  }
+
+  public void addFriend(Terminal terminal, String friend){
+    //todo
+  }
+
 
   private void parseLineFromImportFile(String line) throws UnrecognizedEntryException{
       //
