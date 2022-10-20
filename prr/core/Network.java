@@ -9,6 +9,9 @@ import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
 import prr.core.exception.UnrecognizedEntryException;
+import prr.core.exception.RegisterClientException;
+import prr.core.exception.RegisterTerminalException;
+import prr.core.exception.ClientNotFound;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -25,7 +28,6 @@ public class Network implements Serializable {
   private List<Client> _clientList;
   private double _payment;
   private double _debt;
-  private List<Terminal> _allTerminals;
 
 
   // FIXME define contructor(s)
@@ -55,44 +57,60 @@ public class Network implements Serializable {
     return _clientList;
   }
 
-  public Client getClient(String key){
+  public Client getClient(String key) throws ClientNotFound {
     for(Client c : _clientList){
       if(key == c.getKey()){
         return c;
       }
     }
-    return new Client("", "", 0); //TODO: o que é que retorna se não encontra cliente? lança
+    throw new ClientNotFound();
   }
-  public List<Terminal> getTerminais(){
-    return _allTerminals = new ArrayList<Terminal>();
 
-  }
-  public void addTerminal(Terminal t){
-    _allTerminals.add(t);
-  }
-  public Terminal getTerminal(String key) throws UnknownTerminalException{
-    for(Terminal t : _allTerminals){
-      
+  public Boolean hasClient(String key) {
+    for(Client c : _clientList){
+      if(key == c.getKey()){
+        return true;
       }
-
-     
-
-
-      }
+    }
+    return false;
   }
-      
-      
 
-        
+  public void registerClient( String clientKey, String clientName, int clientFiscalNumber ) throws RegisterClientException  {
+    Client client;
 
-      
-        
-      
-    
-    
-    
+    if(hasClient(clientKey)) {
+        throw new RegisterClientException();
+    }
+
+    client = new Client(clientKey, clientName, clientFiscalNumber);
+    addClient(client);
   
+  }
   
+  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws RegisterTerminalException {
+
+    Client client;
+
+    //procurar cliente com clientId ... se falhar throw exception
+    try {
+      client = getClient(clientId);
+    } catch (ClientNotFound e) {
+      throw new RegisterTerminalException();
+    }
+
+    //regista o terminal no cliente encontrado ... se falhar throw exception
+    try {
+      return client.registerTerminal(terminalType, terminalId);
+    } catch (Exception e) {  //todo....  ver se é necessário distingir as varias exceptions..
+      throw new RegisterTerminalException();  
+    }
+
+  }
+
+  public void addFriend(Terminal terminal, String friend){
+    //todo
+  }
+
 
   private void parseLineFromImportFile(String line) throws UnrecognizedEntryException{
       //
