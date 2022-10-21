@@ -1,4 +1,5 @@
 package prr.core;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,7 +15,10 @@ enum ClientType{
     PLATINUM
 }
 
-public class Client {
+public class Client implements Serializable {
+
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202208091753L;
     private String _key;
     private String _name;
     private int _fiscalNumber;

@@ -1,7 +1,6 @@
 package prr.core;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
@@ -17,6 +16,8 @@ public class NetworkManager {
 
   /** The network itself. */
   private Network _network = new Network();
+  private String _networkFilename = "";
+
   //FIXME  addmore fields if needed
   
   public Network getNetwork() {
@@ -31,6 +32,24 @@ public class NetworkManager {
    */
   public void load(String filename) throws UnavailableFileException {
     //FIXME implement serialization method
+    ObjectInputStream objectIn = null;
+
+    try {
+      objectIn = new ObjectInputStream(new FileInputStream(filename));
+      _network = (Network) objectIn.readObject(); //todo... verificar se pode fazer o cast?!?
+      setNetworkFilename(filename);
+    } catch (Exception e) { //todo...
+      throw new UnavailableFileException(filename);
+    } finally {
+      try {
+        if (objectIn != null)
+          objectIn.close();
+      } catch (Exception e) {
+        throw new UnavailableFileException(filename);
+      }
+    }
+
+
   }
   
   /**
@@ -42,6 +61,7 @@ public class NetworkManager {
    */
   public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
     //FIXME implement serialization method
+    saveAs(getNetworkFilename());
   }
   
   /**
@@ -55,8 +75,33 @@ public class NetworkManager {
    */
   public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
     //FIXME implement serialization method
+    ObjectOutputStream objectOut = null;
+
+    try {
+      objectOut = new ObjectOutputStream(new FileOutputStream(filename));
+      objectOut.writeObject(_network);
+      setNetworkFilename(filename);
+    } catch (Exception e) { //todo... ou retirar
+      e.printStackTrace();
+    } finally {
+      if (objectOut != null)
+        objectOut.close();
+    }
+
   }
-  
+
+  public boolean hasNetworkFilename() {
+    return !getNetworkFilename().isEmpty();
+  }
+
+  public void setNetworkFilename(String filename) {
+    _networkFilename = filename;
+  }
+
+  public String getNetworkFilename() {
+    return _networkFilename;
+  }
+
   /**
    * Read text input file and create domain entities..
    * 

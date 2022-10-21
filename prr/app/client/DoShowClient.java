@@ -15,14 +15,13 @@ class DoShowClient extends Command<Network> {
 
   DoShowClient(Network receiver) {
     super(Label.SHOW_CLIENT, receiver);
-    //FIXME add command fields
+
     addStringField("key",Message.key());
   }
   
   @Override
   protected final void execute() throws UnknownClientKeyException {
     String key = stringField("key");
-    //FIXME implement command
      
     try{
       Client c = _receiver.getClient(key);

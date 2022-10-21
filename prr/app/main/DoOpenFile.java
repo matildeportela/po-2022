@@ -1,5 +1,6 @@
 package prr.app.main;
 
+import prr.app.main.Message;
 import prr.core.NetworkManager;
 import prr.app.exception.FileOpenFailedException;
 import pt.tecnico.uilib.forms.Form;
@@ -14,17 +15,18 @@ class DoOpenFile extends Command<NetworkManager> {
 
   DoOpenFile(NetworkManager receiver) {
     super(Label.OPEN_FILE, receiver);
-    //FIXME add command fields
+    addStringField("filename", Message.openFile());
   }
   
   @Override
   protected final void execute() throws CommandException {
-    /*
-      try {
-      //FIXME implement command
-      } catch (UnavailableFileException e) {
-        throw new FileOpenFailedException(e);
-      }
-    */  
+    String filename = stringField("filename");
+
+    try {
+      _receiver.load( filename );
+    } catch (Exception e) { //todo: uso UnavailableFileException ou Exception ?!?!
+      throw new FileOpenFailedException(e);
+    }
+
   }
 }

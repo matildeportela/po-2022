@@ -3,11 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 import java.io.IOException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.HashSet;
-import java.util.Set;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.RegisterClientException;
 import prr.core.exception.RegisterTerminalException;
@@ -170,9 +165,6 @@ public class Network implements Serializable {
    */
   void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
     Parser parser;
-
-    //FIXME implement method
-    System.out.println("IMPORT FILE: " + filename);
 
     parser = new Parser(this);
     parser.parseFile(filename);
