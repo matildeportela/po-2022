@@ -120,11 +120,16 @@ public class Network implements Serializable {
   public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws RegisterTerminalException, UnrecognizedEntryException {
 
     Terminal terminal;
-    
+    Client client;
     
 
     //procurar cliente com clientId ... se falhar throw exception
-    if(!hasClient(clientId)) {
+//    if(!hasClient(clientId)) {
+//      throw new RegisterTerminalException();
+//    }
+    try {
+      client = getClient(clientId);
+    } catch (ClientNotFoundException e) {
       throw new RegisterTerminalException();
     }
 
@@ -134,15 +139,17 @@ public class Network implements Serializable {
     }
 
 
-
-
     switch (terminalType) {
         case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);
         case "FANCY" -> terminal = new FancyTerminal(terminalId, clientId);
         default -> throw new UnrecognizedEntryException("terminalType");
     } 
 
+    //acrescenta o terminal à lista de terminais da network
     addTerminal(terminal);
+
+    //adiciona tb o terminal à lista de terminais do client
+    client.addTerminal(terminal);   //todo: ??? confirmar se é assim
 
     return terminal;
 

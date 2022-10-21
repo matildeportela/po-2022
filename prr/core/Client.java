@@ -31,7 +31,8 @@ public class Client {
         _name = name;
         _fiscalNumber= fiscalNumber;
         _type = ClientType.NORMAL;
-        _notifications = "Yes";
+        _notifications = "YES";
+        _terminalList = new ArrayList<Terminal>();
     }
 
     public double getClientPayment(){
@@ -63,31 +64,23 @@ public class Client {
         return _type;
     }
 
-    public boolean addTerminal(Terminal t){
-        _terminalList = new ArrayList<Terminal>();
+    public void addTerminal(Terminal t){
         _terminalList.add(t);
-        return true;
     }
 
     public List<Terminal> getTerminalList(){
         return _terminalList;
     }
 
-    public List<Terminal> getUnactiveTerminals(){
-        List<Terminal> unactiveTerminals = new ArrayList<Terminal> ();
-        for(Terminal i : _terminalList){
+    public int getActiveTerminalsCount(){
+        int n = 0;
+
+        for(Terminal i : getTerminalList()){
             if(i.isOff()){
-                unactiveTerminals.add(i);
+                n++;
             }
         }
-        return unactiveTerminals;
-    }
-
-    public int getActiveTerminalsCount(){
-        int activeTerminalsCount;
-        
-        activeTerminalsCount = _terminalList.size() - getUnactiveTerminals().size();
-        return activeTerminalsCount;
+        return n;
     }
     
     public String getNotification(){
@@ -98,18 +91,18 @@ public class Client {
 
     public String toString(){
         
-        String client = 
+        String str =
             "CLIENT"+"|"+
             getKey()+"|"+
             getName()+"|"+ 
             getFiscalNumber()+ "|" + 
             getType() + "|" + 
             getNotification()+ "|"+
-            //getActiveTerminalsCount()+"|"+        //todo...
-            getClientPayment()+"|"+ 
-            getClientDebt();
+            getActiveTerminalsCount()+"|"+
+            Math.round(getClientPayment())+"|"+
+            Math.round(getClientDebt());
 
-        return client;
+        return str;
     }
     
 }
