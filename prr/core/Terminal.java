@@ -34,6 +34,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private List<Terminal> _friends;
   private TerminalState _state;
   private TerminalType _type;
+  private List<Communication> _communicationList;
 
   // FIXME define contructor(s)
   public Terminal(String id, String owner, TerminalType type){
@@ -44,6 +45,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     _friends = new ArrayList<>();
     _state = TerminalState.IDLE;
     _type = type;
+    _communicationList = new ArrayList<Communication>();
   }
   
   // FIXME define methods
@@ -116,6 +118,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     }
     return orderedList;
   }
+
+  public boolean isActive(){
+    return (_communicationList.size() > 0);
+  }
   
 
   public int compareTo(Terminal t) {
@@ -129,7 +135,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
    **/
   public boolean canEndCurrentCommunication() {
     // FIXME add implementation code
-    return true;
+    return false;
   }
   
   /**
@@ -139,7 +145,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
    **/
   public boolean canStartCommunication() {
     // FIXME add implementation code
-    return true;
+    return true; //todo: falta a logica
   }
 
 
@@ -150,9 +156,13 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     getId() +"|"+
     getOwner() +"|"+
     getTerminalState() +"|"+
-    getTerminalPayments() +"|"+
-    sortFriendsList();     
+    Math.round(getTerminalPayments()) +"|"+
+    Math.round(getTerminalDebts());
 
+
+    if(_friends.size() > 0) {
+      terminalString += "|" + sortFriendsList();     
+    }
 
     return terminalString;
   }

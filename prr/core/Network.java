@@ -6,7 +6,9 @@ import java.io.IOException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.RegisterClientException;
 import prr.core.exception.RegisterTerminalException;
+import prr.app.exception.DuplicateClientKeyException;
 import prr.core.exception.ClientNotFoundException;
+import prr.core.exception.DuplicateTerminalException;
 import prr.core.exception.TerminalNotFoundException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
@@ -78,7 +80,7 @@ public class Network implements Serializable {
     Client client;
 
     if(hasClient(clientKey)) {
-        throw new RegisterClientException();
+        throw new RegisterClientException(clientKey);
     }
 
     client = new Client(clientKey, clientName, clientFiscalNumber);
@@ -111,8 +113,18 @@ public class Network implements Serializable {
     }
     throw new TerminalNotFoundException(key);
   }
+  public List<Terminal> getUnactiveTerminals(){
+    ArrayList<Terminal> unactiveTerminals =  new ArrayList<Terminal>();
+    for(Terminal t : _allTerminals){
+      if(!t.isActive()){
+        unactiveTerminals.add(t);
+        
+      }
+    }
+    return unactiveTerminals;
+}
   
-  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws RegisterTerminalException, UnrecognizedEntryException {
+  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws UnrecognizedEntryException, ClientNotFoundException, DuplicateTerminalException {
 
     Terminal terminal;
     Client client;
@@ -122,15 +134,13 @@ public class Network implements Serializable {
 //    if(!hasClient(clientId)) {
 //      throw new RegisterTerminalException();
 //    }
-    try {
+    
       client = getClient(clientId);
-    } catch (ClientNotFoundException e) {
-      throw new RegisterTerminalException();
-    }
+    
 
     //todo: verificar se é necessário confirmar a existencia desse terminalId e se já existir trow exception
     if(hasTerminal(terminalId)) {
-      throw new RegisterTerminalException();
+      throw new DuplicateTerminalException(terminalId);
     }
 
 

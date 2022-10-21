@@ -7,3 +7,7 @@ Executar:
 
 java -cp po-uilib.jar:. -Dimport="import.txt" prr.app.App
 
+
+Correr testes:
+
+./runtests.sh 
