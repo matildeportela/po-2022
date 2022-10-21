@@ -19,6 +19,7 @@ public class Client implements Serializable {
 
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202208091753L;
+
     private String _key;
     private String _name;
     private int _fiscalNumber;
@@ -80,7 +81,7 @@ public class Client implements Serializable {
         int n = 0;
 
         for(Terminal i : getTerminalList()){
-            if(i.isOff()){
+            if(!i.isOff()){
                 n++;
             }
         }

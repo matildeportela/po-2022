@@ -25,7 +25,6 @@ class DoSaveFile extends Command<NetworkManager> {
   protected final void execute() {
     String filename = stringField("filename");
 
-    //FIXME implement command and create a local Form
     try {
       _receiver.saveAs(filename);
     } catch (Exception e) { //todo...

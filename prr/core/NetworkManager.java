@@ -74,15 +74,13 @@ public class NetworkManager {
    * @throws IOException if there is some error while serializing the state of the network to disk.
    */
   public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
-    //FIXME implement serialization method
+  
     ObjectOutputStream objectOut = null;
 
     try {
       objectOut = new ObjectOutputStream(new FileOutputStream(filename));
       objectOut.writeObject(_network);
       setNetworkFilename(filename);
-    } catch (Exception e) { //todo... ou retirar
-      e.printStackTrace();
     } finally {
       if (objectOut != null)
         objectOut.close();
