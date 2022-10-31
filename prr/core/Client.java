@@ -87,7 +87,10 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public int compareTo(Client c) {
-        return _key.compareTo(c.getKey());
+        
+        
+
+        return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
       }
     
 
