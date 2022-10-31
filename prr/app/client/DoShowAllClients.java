@@ -16,7 +16,7 @@ class DoShowAllClients extends Command<Network> {
   
   @Override
   protected final void execute() throws CommandException {
-    _display.addAll(_receiver.getClients());
+    _display.addAll(_receiver.getSortedClients());
     _display.display();
   }
 }

@@ -9,7 +9,7 @@ enum ClientType{
     PLATINUM
 }
 
-public class Client implements Serializable {
+public class Client implements Serializable, Comparable<Client> {
 
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202208091753L;
@@ -86,6 +86,9 @@ public class Client implements Serializable {
         return _notifications;
     }
 
+    public int compareTo(Client c) {
+        return _key.compareTo(c.getKey());
+      }
     
 
     public String toString(){

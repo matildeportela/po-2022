@@ -8,6 +8,8 @@ import prr.core.exception.RegisterClientException;
 import prr.core.exception.ClientNotFoundException;
 import prr.core.exception.DuplicateTerminalException;
 import prr.core.exception.TerminalNotFoundException;
+import java.util.Collections;
+
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -57,6 +59,12 @@ public class Network implements Serializable {
   public List<Client> getClients(){
     return _clientList;
   }
+
+  public List<Client> getSortedClients(){
+    Collections.sort(_clientList);    
+    return _clientList;
+  }
+
   /**
    * gets specific client from his unique key and throws exeption if it does not exist
    */
