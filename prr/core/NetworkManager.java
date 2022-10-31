@@ -78,7 +78,7 @@ public class NetworkManager {
     ObjectOutputStream objectOut = null;
 
     try {
-      objectOut = new ObjectOutputStream(new FileOutputStream(filename));
+      objectOut = new ObjectOutputStream(new FileOutputStream(filename, false));
       objectOut.writeObject(_network);
       setNetworkFilename(filename);
     } finally {

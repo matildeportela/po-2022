@@ -12,21 +12,25 @@ class DoSaveFile extends Command<NetworkManager> {
 
   DoSaveFile(NetworkManager receiver) {
     super(Label.SAVE_FILE, receiver);
-
-    if(!_receiver.hasNetworkFilename()) {
-      addStringField("filename", Message.newSaveAs());
-    } else {
-      addStringField("filename", Message.saveAs());
-    }
-
   }
   
   @Override
   protected final void execute() {
-    String filename = stringField("filename");
+
 
     try {
-      _receiver.saveAs(filename);
+
+      if(_receiver.hasNetworkFilename()) {
+        _receiver.save();
+      } else {
+        Form form = new Form("Save As");
+        form.addStringField("filename", Message.newSaveAs());
+        form.parse();
+
+        String filename = form.stringField("filename");
+        _receiver.saveAs(filename);
+      }
+
     } catch (Exception e) { //todo...
       e.printStackTrace();
     }
