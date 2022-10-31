@@ -36,9 +36,9 @@ public class NetworkManager {
 
     try {
       objectIn = new ObjectInputStream(new FileInputStream(filename));
-      _network = (Network) objectIn.readObject(); //todo... verificar se pode fazer o cast?!?
+      _network = (Network) objectIn.readObject();
       setNetworkFilename(filename);
-    } catch (Exception e) { //todo...
+    } catch (Exception e) { 
       throw new UnavailableFileException(filename);
     } finally {
       try {

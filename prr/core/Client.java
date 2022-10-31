@@ -2,13 +2,7 @@ package prr.core;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
-import prr.core.exception.RegisterTerminalException;
-import prr.core.exception.UnrecognizedEntryException;
-
-import java.util.HashSet;
 enum ClientType{
     NORMAL,
     GOLD,

@@ -1,12 +1,9 @@
 package prr.core;
 
-import java.io.Reader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 
-import java.util.Collection;
-import java.util.ArrayList;
 
 import prr.core.exception.RegisterClientException;
 import prr.core.exception.UnrecognizedEntryException;
@@ -81,7 +78,7 @@ public class Parser {
            throw new UnrecognizedEntryException("Invalid specification in line: " + line);
         } 
       }
-    } catch (Exception e) {     //todo ... ver que tipo de exception
+    } catch (Exception e) {     
       throw new UnrecognizedEntryException("Invalid specification: " + line, e);
     }
   }
@@ -96,7 +93,7 @@ public class Parser {
       
       for (String friend : friends)
         _network.addFriend(terminal, friend);
-    } catch (Exception e) {//todo ... ver que tipo de exception
+    } catch (Exception e) {
       throw new UnrecognizedEntryException("Some message error in line:  " + line, e);
     }
   }

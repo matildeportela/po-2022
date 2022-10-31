@@ -3,7 +3,6 @@ package prr.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashSet;
 import java.util.Collections;
 enum TerminalState{
   IDLE,
@@ -48,7 +47,6 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     _communicationList = new ArrayList<Communication>();
   }
   
-  // FIXME define methods
   public double getTerminalPayments(){
     return _payment;
     
@@ -58,13 +56,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     if (_state != TerminalState.OFF){
       _state = TerminalState.SILENT;
     }
-  } //todo deve lancar excecao caso contrario??
-  
+  } 
   public void turnOff() {
     if (_state != TerminalState.OCCUPIED){
       _state = TerminalState.OFF;
     }
-  } //todo deve lancar excecao caso contrario??
+  }
 
   public double getTerminalDebts(){
     return _debt;
@@ -145,12 +142,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
    **/
   public boolean canStartCommunication() {
     // FIXME add implementation code
-    return true; //todo: falta a logica
+    return true; 
   }
 
 
   public String toString() {
-    //todo ... falta
+
     String terminalString = 
     getType() +"|"+
     getId() +"|"+

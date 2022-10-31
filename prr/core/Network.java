@@ -5,8 +5,6 @@ import java.io.Serializable;
 import java.io.IOException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.RegisterClientException;
-import prr.core.exception.RegisterTerminalException;
-import prr.app.exception.DuplicateClientKeyException;
 import prr.core.exception.ClientNotFoundException;
 import prr.core.exception.DuplicateTerminalException;
 import prr.core.exception.TerminalNotFoundException;
@@ -37,7 +35,10 @@ public class Network implements Serializable {
   }
 
   // FIXME define methods
-
+  
+  /**
+   * gets overall clients balance i.e. network balance
+   */
   public double getBalance(){
     for(Client c : _clientList){
       _payment += c.getClientPayment();
@@ -56,7 +57,9 @@ public class Network implements Serializable {
   public List<Client> getClients(){
     return _clientList;
   }
-
+  /**
+   * gets specific client from his unique key and throws exeption if it does not exist
+   */
   public Client getClient(String key) throws ClientNotFoundException {
     for(Client c : _clientList){
       if(key.equals(c.getKey())){
@@ -66,6 +69,9 @@ public class Network implements Serializable {
     throw new ClientNotFoundException(key);
   }
 
+  /**
+   * checks if a client exists in the network
+   */
   public Boolean hasClient(String key) {
     for(Client c : _clientList){
 
@@ -76,6 +82,9 @@ public class Network implements Serializable {
     return false;
   }
 
+  /**
+   * registers a new client in the network in case it does not already exist 
+   */
   public void registerClient( String clientKey, String clientName, int clientFiscalNumber ) throws RegisterClientException  {
     Client client;
 
@@ -96,6 +105,9 @@ public class Network implements Serializable {
     _allTerminals.add(t);
   }
 
+  /**
+   * checks if a terminal exists in the network
+   */
   public boolean hasTerminal(String key) {
     for(Terminal t : _allTerminals){
       if(key.equals(t.getId())) {
@@ -105,6 +117,9 @@ public class Network implements Serializable {
     return false;
   }
 
+  /**
+   * gets specific terminal from his unique key and throws exeption if it does not exist
+   */
   public Terminal getTerminal(String key) throws TerminalNotFoundException {
     for(Terminal t : _allTerminals){
       if(key.equals(t.getId())) {
@@ -113,6 +128,10 @@ public class Network implements Serializable {
     }
     throw new TerminalNotFoundException(key);
   }
+
+  /**
+   * gets unactive terminals in the network i.e. terminals that have not been used yet
+   */
   public List<Terminal> getUnactiveTerminals(){
     ArrayList<Terminal> unactiveTerminals =  new ArrayList<Terminal>();
     for(Terminal t : _allTerminals){
@@ -123,26 +142,20 @@ public class Network implements Serializable {
     }
     return unactiveTerminals;
 }
-  
+  /**
+   * registers a new termional in the network in case it does not already exist and assigns it to a client
+   * * makes distinction between BASIC and FANCY terminals
+   */
   public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws UnrecognizedEntryException, ClientNotFoundException, DuplicateTerminalException {
 
     Terminal terminal;
     Client client;
     
-
-    //procurar cliente com clientId ... se falhar throw exception
-//    if(!hasClient(clientId)) {
-//      throw new RegisterTerminalException();
-//    }
-    
       client = getClient(clientId);
     
-
-    //todo: verificar se é necessário confirmar a existencia desse terminalId e se já existir trow exception
     if(hasTerminal(terminalId)) {
       throw new DuplicateTerminalException(terminalId);
     }
-
 
     switch (terminalType) {
         case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);
@@ -150,19 +163,18 @@ public class Network implements Serializable {
         default -> throw new UnrecognizedEntryException("terminalType");
     } 
 
-    //acrescenta o terminal à lista de terminais da network
+    //adds terminal to networks list of terminals
     addTerminal(terminal);
 
-    //adiciona tb o terminal à lista de terminais do client
-    client.addTerminal(terminal);   //todo: ??? confirmar se é assim
+    //adds terminal to client list of terminals
+    client.addTerminal(terminal);
 
     return terminal;
 
   }
 
   public void addFriend(String terminal, String friend){
-    //if (terminal._friends.contains(friend))
-    //todo...
+
   }
 
 
@@ -179,13 +191,6 @@ public class Network implements Serializable {
     parser = new Parser(this);
     parser.parseFile(filename);
 
-/*     for(Client c : getClients()){
-      System.out.println(c.toString());
-    }
-
-    for(Terminal t : getTerminals()){
-      System.out.println(t.toString());
-    } */
   }
 
 
