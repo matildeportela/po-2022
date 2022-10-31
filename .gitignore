@@ -1,3 +1,5 @@
 *.class
 tests/*.diff
 tests/*.outhyp
+tests.a
+runtests.a.sh
