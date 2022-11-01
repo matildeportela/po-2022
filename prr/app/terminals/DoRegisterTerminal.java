@@ -42,6 +42,7 @@ class DoRegisterTerminal extends Command<Network> {
     catch(DuplicateTerminalException rte){
       throw new DuplicateTerminalKeyException(key);
     }
+    
     catch(ClientNotFoundException cnf) {
       throw new UnknownClientKeyException(owner);
     }

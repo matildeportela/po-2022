@@ -1,5 +1,7 @@
 package prr.core;
 
-public class Communication{
+public abstract class Communication{
+    
+
     
 }
