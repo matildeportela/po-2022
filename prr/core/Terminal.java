@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+
+import prr.app.exception.UnknownTerminalKeyException;
 import prr.core.exception.*;
 enum TerminalState{
   IDLE,
@@ -97,18 +99,53 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   }
 
   public void addFriend(Terminal f) throws DuplicateTerminalException{
-    for(Terminal t : _friends){
-      if (t.getId() != f.getId() || _id != f.getId()){
-        _friends.add(f);
-        
-      }
-      
-    }
-    throw new DuplicateTerminalException(f.getId());
     
+    if(_id.equals(f.getId())) {
+      //não pode ser friend dele próprio
+      throw new DuplicateTerminalException(f.getId());
+    }
+
+    for(Terminal t : _friends){
+      //não pode ser friend de um friend já existente na lista de friends
+      if (t.getId().equals(f.getId()) ){
+        throw new DuplicateTerminalException(f.getId());
+      }
+    }
+
+    _friends.add(f);
+  }
+
+  public void removeFriendById(String friendId ) throws UnknownTerminalKeyException {
+    boolean didRemove = false;
+    for (Terminal t: _friends){
+      
+      if (t.getId().equals(friendId)){
+        _friends.remove(t);
+        didRemove = true;
+        break;
+      }
+    }
+
+    if (!didRemove) {
+      throw new UnknownTerminalKeyException(friendId);
+    }
+  }
+
+  public void removeFriend(Terminal f) throws UnknownTerminalKeyException {
+    boolean didRemove = false;
+    for (Terminal t: _friends){
+      if (t.getId().equals(f.getId())){
+        _friends.remove(f);
+        didRemove = true;
+        break;
+      }
+    }
+    if (!didRemove) {
+      throw new UnknownTerminalKeyException(f.getId());
+    }
   }
   
-  public List<String> sortFriendsList(){
+  public List<String> getSortedFriendsListIds(){
     ArrayList<String> orderedList = new ArrayList<String>();
     Collections.sort(_friends);
     for (Terminal t : _friends){
@@ -160,7 +197,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
 
 
     if(_friends.size() > 0) {
-      terminalString += "|" + sortFriendsList();     
+      terminalString += "|" + String.join(",", getSortedFriendsListIds());
     }
 
     return terminalString;
