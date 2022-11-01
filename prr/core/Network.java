@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.io.IOException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.RegisterClientException;
+import prr.app.exception.InvalidTerminalKeyException;
 import prr.core.exception.ClientNotFoundException;
 import prr.core.exception.DuplicateTerminalException;
 import prr.core.exception.TerminalNotFoundException;
@@ -108,6 +109,14 @@ public class Network implements Serializable {
   public List<Terminal> getTerminals(){
     return _allTerminals;
   }
+  public List<Terminal> getSortedTerminals(){
+    
+    Collections.sort(_allTerminals);
+    return _allTerminals;
+  }
+
+   
+  
 
   public void addTerminal(Terminal t){
     _allTerminals.add(t);
@@ -154,16 +163,27 @@ public class Network implements Serializable {
    * registers a new termional in the network in case it does not already exist and assigns it to a client
    * * makes distinction between BASIC and FANCY terminals
    */
-  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws UnrecognizedEntryException, ClientNotFoundException, DuplicateTerminalException {
+  public Terminal registerTerminal( String terminalType, String terminalId, String clientId) throws UnrecognizedEntryException, ClientNotFoundException, DuplicateTerminalException, InvalidTerminalKeyException {
 
     Terminal terminal;
     Client client;
     
       client = getClient(clientId);
+      
     
     if(hasTerminal(terminalId)) {
       throw new DuplicateTerminalException(terminalId);
     }
+    char[] chars = terminalId.toCharArray();
+    for(char c : chars){
+      if (!Character.isDigit(c) || chars.length != 6){
+        throw new InvalidTerminalKeyException(terminalId);
+
+      }
+      
+    }
+    
+    //terminal = TerminalFactory.create(terminalType);
 
     switch (terminalType) {
         case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);

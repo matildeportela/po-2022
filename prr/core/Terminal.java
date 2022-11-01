@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+import prr.core.exception.*;
 enum TerminalState{
   IDLE,
   OFF,
@@ -95,15 +96,16 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     return _type;
   }
 
-  public boolean addFriend(Terminal f){
+  public void addFriend(Terminal f) throws DuplicateTerminalException{
     for(Terminal t : _friends){
-      if (t.getId() != f.getId()){
+      if (t.getId() != f.getId() || _id != f.getId()){
         _friends.add(f);
-        return true;
+        
       }
       
     }
-    return false;
+    throw new DuplicateTerminalException(f.getId());
+    
   }
   
   public List<String> sortFriendsList(){
