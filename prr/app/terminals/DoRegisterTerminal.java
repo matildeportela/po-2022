@@ -45,6 +45,7 @@ class DoRegisterTerminal extends Command<Network> {
     catch(ClientNotFoundException cnf) {
       throw new UnknownClientKeyException(owner);
     }
+
     catch(UnrecognizedEntryException uee){
       throw new InvalidTerminalKeyException(key);
     }

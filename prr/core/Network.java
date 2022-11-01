@@ -159,6 +159,14 @@ public class Network implements Serializable {
     }
     return unactiveTerminals;
 }
+
+
+public List<Terminal> getSortedTerminals() {
+  Collections.sort(_allTerminals);
+  return _allTerminals;
+}
+
+
   /**
    * registers a new termional in the network in case it does not already exist and assigns it to a client
    * * makes distinction between BASIC and FANCY terminals
