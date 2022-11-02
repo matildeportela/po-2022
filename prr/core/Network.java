@@ -37,6 +37,7 @@ public class Network implements Serializable {
   public Network(){
       _clientList = new ArrayList<Client> ();
       _allTerminals = new ArrayList<Terminal>();
+      _communicationList = new ArrayList<Communication>();
   }
 
   // FIXME define methods
@@ -205,7 +206,6 @@ public class Network implements Serializable {
     for(Terminal t : _allTerminals){
       if(!t.isActive()){
         unactiveTerminals.add(t);
-        
       }
     }
     return sortTerminalList(unactiveTerminals);

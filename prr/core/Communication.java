@@ -64,6 +64,6 @@ abstract public class Communication {
     }
 
      public Client getClient() {
-        return _origin.getOwner();
+        return getOriginTerminal().getOwner();
     } 
 }

@@ -37,8 +37,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private List<Terminal> _friends;
   private TerminalState _state;
   private TerminalType _type;
-  private List<Communication> _communicationList;
-  private Communication _ongoingCommunication;
+  private List<Communication> _madeCommunications;
+  private List<Communication> _receivedCommunications;
+  private Communication _ongoingCommunication; //todo??
 
   // FIXME define contructor(s)
   public Terminal(String id, Client owner, TerminalType type){
@@ -49,7 +50,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     _friends = new ArrayList<>();
     _state = TerminalState.IDLE;
     _type = type;
-    _communicationList = new ArrayList<Communication>();
+    _receivedCommunications = new ArrayList<Communication>();
+    _madeCommunications = new ArrayList<Communication>();
   }
   
   public long getTerminalPayments(){
@@ -169,7 +171,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   }
 
   public boolean isActive(){
-    return (_communicationList.size() > 0);
+    return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
   }
   
 

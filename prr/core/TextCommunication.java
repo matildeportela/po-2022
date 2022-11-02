@@ -9,8 +9,7 @@ public class TextCommunication extends Communication {
 
     @Override
     public double computeCost(Plan plan){
-        //plan.computeTextCost(_origin._owner, this);
-        return 0; //todo
+        return plan.computeTextCost(getClient(), this);
     }
 
     public int getSize(){
