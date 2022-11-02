@@ -16,6 +16,12 @@ class DoTurnOnTerminal extends TerminalCommand {
   
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    if(_receiver.isOn()){
+      _display.add(Message.alreadyOn());
+      _display.display();
+    }
+    else{
+      _receiver.turnOn();
+    }
   }
 }

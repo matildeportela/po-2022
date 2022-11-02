@@ -10,8 +10,9 @@ import prr.core.exception.*;
 enum TerminalState{
   IDLE,
   OFF,
-  SILENT,
-  OCCUPIED
+  SILENCE,
+  OCCUPIED,
+  ON
 }
 
 enum TerminalType{
@@ -57,12 +58,17 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
 
   public void setOnSilent() {
     if (_state != TerminalState.OFF){
-      _state = TerminalState.SILENT;
+      _state = TerminalState.SILENCE;
     }
   } 
   public void turnOff() {
     if (_state != TerminalState.OCCUPIED){
       _state = TerminalState.OFF;
+    }
+  }
+  public void turnOn(){
+    if (_state == TerminalState.OFF){
+      _state = TerminalState.ON;
     }
   }
 
@@ -76,6 +82,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
 
   public boolean isOff(){
     return (_state == TerminalState.OFF);
+  }
+  public boolean isOn(){
+    return (_state != TerminalState.OFF);
+  }
+  public boolean isSilent(){
+    return (_state == TerminalState.SILENCE);
   }
 
   public String getId(){

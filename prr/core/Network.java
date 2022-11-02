@@ -65,6 +65,24 @@ public class Network implements Serializable {
     Collections.sort(_clientList);    
     return _clientList;
   }
+  public List<Client> getInDebtClients(){
+    ArrayList<Client> inDebtClientList = new ArrayList<Client> ();
+    for(Client c : _clientList){
+      if(c.hasDebt()){
+        inDebtClientList.add(c);
+      }
+    }
+    return inDebtClientList;
+  }
+  public List<Terminal> getPositiveTerminals(){
+    ArrayList<Terminal> positiveTerminalList = new ArrayList<Terminal> ();
+    for( Terminal t : _allTerminals){
+      if(t.getTerminalBalance() > 0){
+        positiveTerminalList.add(t);
+      }
+    }
+    return positiveTerminalList;
+  }
 
   /**
    * gets specific client from his unique key and throws exeption if it does not exist
@@ -109,10 +127,10 @@ public class Network implements Serializable {
   public List<Terminal> getTerminals(){
     return _allTerminals;
   }
-  public List<Terminal> getSortedTerminals(){
+  public List<Terminal> getSortedTerminals(List<Terminal> listaTerminaisOrdenados){
     
-    Collections.sort(_allTerminals);
-    return _allTerminals;
+    Collections.sort(listaTerminaisOrdenados);
+    return listaTerminaisOrdenados;
   }
 
    
