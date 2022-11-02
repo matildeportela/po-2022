@@ -19,7 +19,7 @@ public class Client implements Serializable, Comparable<Client> {
     private int _fiscalNumber;
     private double _payment;
     private double _debt;
-    private String _notifications;
+    private boolean _notifications;
     private double _balance;
     private List<Terminal> _terminalList;
     private ClientType _type;
@@ -30,7 +30,7 @@ public class Client implements Serializable, Comparable<Client> {
         _name = name;
         _fiscalNumber= fiscalNumber;
         _type = ClientType.NORMAL;
-        _notifications = "YES";
+        _notifications = true;
         _terminalList = new ArrayList<Terminal>();
     }
 
@@ -85,8 +85,21 @@ public class Client implements Serializable, Comparable<Client> {
         return n;
     }
     
-    public String getNotification(){
+    public boolean hasNotificationsEnabled(){
         return _notifications;
+    }
+
+    public void enableNotifications() {
+        _notifications = true;
+    }
+
+    public void disableNotifications() {
+        _notifications = false;
+    }
+
+    public String getNotificationStatus() {
+        if(hasNotificationsEnabled()) return "YES";
+        return "NO";
     }
 
     public int compareTo(Client c) {
@@ -102,12 +115,12 @@ public class Client implements Serializable, Comparable<Client> {
             getName()+"|"+ 
             getFiscalNumber()+ "|" + 
             getType() + "|" + 
-            getNotification()+ "|"+
+            getNotificationStatus()+ "|"+
             getActiveTerminalsCount()+"|"+
             Math.round(getClientPayment())+"|"+
             Math.round(getClientDebt());
 
         return str;
     }
-    
+
 }

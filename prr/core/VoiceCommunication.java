@@ -1,19 +1,14 @@
 package prr.core;
 
 public class VoiceCommunication extends InteractiveCommunication{
-    private int _voiceDuration;
-    public VoiceCommunication(int id, Terminal origin, Terminal destination){
+
+    public VoiceCommunication(int id, Terminal origin, Terminal destination) {
         super(id, origin, destination, CommunicationType.VOICE);
-    }
-    public void setVoiceDuration(int voiceDuration){
-        _voiceDuration = voiceDuration;
-    }
-    public int getVoiceDuration(){
-        return _voiceDuration;
     }
 
     @Override
-    public double computeCost(Plan plan){
+    public double computeCost(Plan plan) {
+        //todo: falta ver se é amigo e aplicar os 50% de desconto
         return plan.computeVoiceCost(getClient(), this);
     }
 

@@ -6,3 +6,5 @@ runtests.a.sh
 ap*.dat
 0
 out
+testsBoth/*.diff
+testsBoth/*.outhyp

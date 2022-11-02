@@ -17,16 +17,13 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
   DoOpenMenuTerminalConsole(Network receiver) {
     super(Label.OPEN_MENU_TERMINAL, receiver);
     addStringField("key",Message.terminalKey());
-    //FIXME add command fields
-
-    //System.out.println("construtor do DoOpenMenuTerminalConsole");
   }
 
   @Override
   protected final void execute() throws UnknownTerminalKeyException {
       String key = stringField("key");
       Menu main;
-      //System.out.println("execute do DoOpenMenuTerminalConsole");
+
       try{
         main = new Menu(_receiver, _receiver.getTerminal(key));
         main.open();

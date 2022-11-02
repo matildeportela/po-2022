@@ -170,6 +170,14 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     return orderedList;
   }
 
+  public void addMadeCommunication( Communication comm ) {
+    _madeCommunications.add(comm);
+  }
+
+  public void addReceivedCommunication( Communication comm ) {
+    _receivedCommunications.add(comm);
+  }
+
   public boolean isActive(){
     return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
   }
@@ -195,8 +203,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
    * @return true if this terminal is neither off neither busy, false otherwise.
    **/
   public boolean canStartCommunication() {
-    // FIXME add implementation code
-    return true; 
+    return !isOff();
   }
 
 

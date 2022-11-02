@@ -1,7 +1,9 @@
 package prr.app.client;
 
+import prr.core.Client;
 import prr.core.Network;
 import prr.app.exception.UnknownClientKeyException;
+import prr.core.exception.ClientNotFoundException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -13,11 +15,24 @@ class DoDisableClientNotifications extends Command<Network> {
 
   DoDisableClientNotifications(Network receiver) {
     super(Label.DISABLE_CLIENT_NOTIFICATIONS, receiver);
-    //FIXME add command fields
+    addStringField("key", Message.key());
   }
   
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    String key = stringField("key");
+
+    try{
+      Client c = _receiver.getClient(key);
+      if(c.hasNotificationsEnabled()) {
+        c.disableNotifications();
+      } else {
+        _display.add( Message.clientNotificationsAlreadyDisabled() );
+        _display.display();
+      }
+    }
+    catch(ClientNotFoundException cnfe){
+      throw new UnknownClientKeyException(key);
+    }
   }
 }

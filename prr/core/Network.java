@@ -3,12 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 import java.io.IOException;
-import prr.core.exception.UnrecognizedEntryException;
-import prr.core.exception.RegisterClientException;
+
+import prr.core.exception.*;
 import prr.app.exception.InvalidTerminalKeyException;
-import prr.core.exception.ClientNotFoundException;
-import prr.core.exception.DuplicateTerminalException;
-import prr.core.exception.TerminalNotFoundException;
+
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -146,7 +144,7 @@ public class Network implements Serializable {
   /**
    * registers a new client in the network in case it does not already exist 
    */
-  public void registerClient( String clientKey, String clientName, int clientFiscalNumber ) throws RegisterClientException  {
+  public void registerClient( String clientKey, String clientName, int clientFiscalNumber ) throws RegisterClientException {
     Client client;
 
     if(hasClient(clientKey)) {
@@ -288,6 +286,35 @@ public class Network implements Serializable {
 
   }
 
+  public List<Communication> getCommunications() {
+      return _communicationList;
+  }
 
+  public void sendTextCommunication(Terminal from, String toKey, String msg) throws TerminalNotFoundException, TerminalOffException
+  {
+    Terminal destination = getTerminal(toKey);
 
+    if(destination.isOff()) {
+      throw new TerminalOffException( toKey );
+    }
+
+    TextCommunication comm = new TextCommunication( getNextCommId(), from, destination,  msg);
+    registerCommunication( comm );
+
+  }
+
+  protected void registerCommunication( Communication comm )
+  {
+    //calcula e actualiza o custo da comunicacao
+    comm.updateCost( new BasicPlan() );
+
+    //adiciona à lista de comunicacoes da network
+    _communicationList.add( comm );
+
+    //adiciona à lista de comunicacoes efetuadas do terminal de origem
+    comm.getOriginTerminal().addMadeCommunication( comm );
+
+    //adiciona à lista de comunicacoes recebidas do terminal de destino
+    comm.getDestinationTerminal().addMadeCommunication( comm );
+  }
 }

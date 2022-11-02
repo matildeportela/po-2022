@@ -21,7 +21,6 @@ abstract public class Communication {
         _destination = destination;
         _isOngoing = isOngoing;
         _type = type;
-    
     }
 
     public Communication(int id, Terminal origin, Terminal destination, CommunicationType type){
@@ -44,23 +43,47 @@ abstract public class Communication {
         return _destination;
     }
 
+    public CommunicationType getType() {
+        return _type;
+    }
+
     public boolean isOngoingCommunication(){
         return _isOngoing;
     }
 
-    public double computeCost(Plan plan){
-        return 0; //todo
+    public String getStatus() {
+        if(isOngoingCommunication()) return "ONGOING";
+        return "FINISHED";
+    }
+
+    public double getCost() {
+        return _cost;
+    }
+
+    public void setCost( double cost ) {
+        _cost = cost;
+    }
+
+    public void updateCost( Plan plan ) {
+        setCost( computeCost(plan) );
     }
 
 
-    abstract public int getSize();
-        
-    
+    abstract public double computeCost(Plan plan);
 
+    abstract public int getSize();
 
     public String toString(){
-        
-        return ""; //todo
+        String str =
+                getType()+"|"+
+                getId()+"|"+
+                getOriginTerminal().getId()+ "|" +
+                getDestinationTerminal().getId()+ "|" +
+                getSize() + "|" +
+                getCost() + "|"+
+                getStatus();
+
+        return str;
     }
 
      public Client getClient() {
