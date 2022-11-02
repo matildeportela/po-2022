@@ -4,23 +4,78 @@ public class BasicPlan extends Plan {
     
     
     public double computeTextCost(Client c, TextCommunication communication){
-        //que tipo de cliente é (PREMIUM, ...)
-        
-        //consoante o tipo.... retornar o preço da TextComm
-        return 0; //todo
+        int textLength = communication.getSize();
+        double cost = 0;
+        switch(c.getType()){
+            case NORMAL:
+            if(textLength < 50){
+                cost = 10;
+            }
+            else if(textLength >= 50 && textLength < 100){
+                cost = 16;
+            }
+            else{
+                cost = 2 * textLength;
+            }
+            case GOLD:
+            if(textLength < 50){
+                cost = 10;
+            }
+            else if(textLength >= 50 && textLength < 100){
+                cost = 10;
+            }
+            else{
+                cost = 2 * textLength;
+            }
+            case PLATINUM:
+            if(textLength < 50){
+                cost = 0;
+            }
+            else if(textLength >= 50 && textLength < 100){
+                cost = 4;
+            }
+            else{
+                cost = 4;
+            }
+
+        }
+        return cost;
     }
 
     public double computeVoiceCost(Client c, VoiceCommunication communication){
-        //que tipo de cliente é (PREMIUM, ...)
+        double voiceDuration = communication.getVoiceDuration() / 60;
+        double cost = 0;
+        switch(c.getType()){
+            case NORMAL:
+            cost = 20 * voiceDuration;
+            
+            case GOLD:
+            cost = 10 * voiceDuration;
+            
+            case PLATINUM:
+            cost = 10 * voiceDuration;
+            
+
+        }
+        return cost;
         
-        //consoante o tipo.... retornar o preço da VoiceComm
-        return 0; //todo
     }
 
     public double computeVideoCost(Client c, VideoCommunication communication){
-        //que tipo de cliente é (PREMIUM, ...)
-        
-        //consoante o tipo.... retornar o preço da VideoComm
-        return 0; //todo
+        double videoDuration = communication.getDuration() / 60;
+        double cost = 0;
+        switch(c.getType()){
+            case NORMAL:
+            cost = 30 * videoDuration;
+            
+            case GOLD:
+            cost = 20 * videoDuration;
+            
+            case PLATINUM:
+            cost = 10 * videoDuration;
+            
+
+        }
+        return cost;
     }
 }

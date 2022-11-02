@@ -53,9 +53,9 @@ abstract public class Communication {
     }
 
 
-    public int getSize(){
-        return 0; //todo
-    }
+    abstract public int getSize();
+        
+    
 
 
     public String toString(){

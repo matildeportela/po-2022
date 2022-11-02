@@ -6,6 +6,13 @@ public class TextCommunication extends Communication {
     public TextCommunication(int id, Terminal origin, Terminal destination){
         super(id, origin, destination, CommunicationType.TEXT);
     }
+    public void setMessage(String message){
+        _message = message;
+        
+    }
+    public String getMessage(){
+        return _message;
+    }
 
     @Override
     public double computeCost(Plan plan){
