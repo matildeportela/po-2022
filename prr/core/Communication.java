@@ -63,7 +63,7 @@ abstract public class Communication {
         return ""; //todo
     }
 
-/*     public Client getClient() {
+     public Client getClient() {
         return _origin.getOwner();
-    } */
+    } 
 }

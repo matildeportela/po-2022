@@ -33,7 +33,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private String _id;
   private long _payment;
   private long _debt;
-  private String _owner;
+  private Client _owner;
   private List<Terminal> _friends;
   private TerminalState _state;
   private TerminalType _type;
@@ -41,7 +41,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private Communication _ongoingCommunication;
 
   // FIXME define contructor(s)
-  public Terminal(String id, String owner, TerminalType type){
+  public Terminal(String id, Client owner, TerminalType type){
     _id = id;
     _owner = owner;
     _payment = 0;
@@ -95,7 +95,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     return _id;
   }
 
-  public String getOwner(){
+  public Client getOwner(){
     return _owner;
   }
 
@@ -203,7 +203,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     String terminalString = 
     getType() +"|"+
     getId() +"|"+
-    getOwner() +"|"+
+    getOwner().getKey() +"|"+
     getTerminalState() +"|"+
     Math.round(getTerminalPayments()) +"|"+
     Math.round(getTerminalDebts());

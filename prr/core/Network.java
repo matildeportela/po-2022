@@ -237,8 +237,8 @@ public class Network implements Serializable {
     //terminal = TerminalFactory.create(terminalType);
 
     switch (terminalType) {
-        case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);
-        case "FANCY" -> terminal = new FancyTerminal(terminalId, clientId);
+        case "BASIC" -> terminal = new BasicTerminal(terminalId, client);
+        case "FANCY" -> terminal = new FancyTerminal(terminalId, client);
         default -> throw new UnrecognizedEntryException("terminalType");
     } 
 
