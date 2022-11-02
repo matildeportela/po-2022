@@ -37,6 +37,7 @@ public class NetworkManager {
     try {
       objectIn = new ObjectInputStream(new FileInputStream(filename));
       _network = (Network) objectIn.readObject();
+      _network.loadCommAutoincrement();
       setNetworkFilename(filename);
     } catch (Exception e) { 
       throw new UnavailableFileException(filename);
@@ -79,6 +80,7 @@ public class NetworkManager {
 
     try {
       objectOut = new ObjectOutputStream(new FileOutputStream(filename, false));
+      _network.storeCommAutoincrement();
       objectOut.writeObject(_network);
       setNetworkFilename(filename);
     } finally {

@@ -30,6 +30,8 @@ public class Network implements Serializable {
   private double _debt;
   private List<Terminal> _allTerminals;
   private List<Communication> _communicationList;
+  private static int _communicationAutoIncrement;
+  private int _storedCommAutoIncrement;
 
 
 
@@ -38,6 +40,8 @@ public class Network implements Serializable {
       _clientList = new ArrayList<Client> ();
       _allTerminals = new ArrayList<Terminal>();
       _communicationList = new ArrayList<Communication>();
+      _communicationAutoIncrement = 0;
+      _storedCommAutoIncrement = 0;
   }
 
   // FIXME define methods
@@ -256,6 +260,18 @@ public class Network implements Serializable {
 
   }
 
+  public static int getNextCommId(){
+    _communicationAutoIncrement += 1;
+    return _communicationAutoIncrement;
+  }
+
+  public void loadCommAutoincrement() {
+    _communicationAutoIncrement = _storedCommAutoIncrement;
+  }
+
+  public void storeCommAutoincrement() {
+    _storedCommAutoIncrement = _communicationAutoIncrement;
+  }
 
   /**
    * Read text input file and create corresponding domain entities.
