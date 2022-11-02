@@ -10,6 +10,7 @@ import prr.core.exception.ClientNotFoundException;
 import prr.core.exception.DuplicateTerminalException;
 import prr.core.exception.TerminalNotFoundException;
 import java.util.Collections;
+import java.util.Comparator;
 
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
@@ -57,22 +58,49 @@ public class Network implements Serializable {
     _clientList.add(c);
   }
 
-  public List<Client> getClients(){
-    return _clientList;
-  }
+
 
   public List<Client> getSortedClients(){
     Collections.sort(_clientList);    
     return _clientList;
   }
   public List<Client> getInDebtClients(){
-    ArrayList<Client> inDebtClientList = new ArrayList<Client> ();
+    List<Client> inDebtClientList = new ArrayList<Client> ();
     for(Client c : _clientList){
       if(c.hasDebt()){
         inDebtClientList.add(c);
       }
     }
+    Collections.sort(inDebtClientList, new Comparator<Client> (){
+      public int compare(Client c1, Client c2){
+        if(c1.getClientDebt() > c2.getClientDebt()){
+          return 1;
+        }
+        else if(c1.getClientDebt() < c2.getClientDebt()){
+          return -1;
+        }
+        else{
+        
+        return c1.getKey().toLowerCase().compareTo(c2.getKey().toLowerCase());
+        }
+      }
+    });
+        
+      
+    
     return inDebtClientList;
+  
+
+  }
+
+  public List<Client> getClientsWithoutDebt(){
+    ArrayList<Client> clientsWithoutDebt = new ArrayList<Client> ();
+    for ( Client c : getSortedClients()){
+      if(c.getBalance() >= 0){
+        clientsWithoutDebt.add(c);
+      }
+    }
+    return clientsWithoutDebt;
   }
   public List<Terminal> getPositiveTerminals(){
     ArrayList<Terminal> positiveTerminalList = new ArrayList<Terminal> ();
@@ -81,7 +109,7 @@ public class Network implements Serializable {
         positiveTerminalList.add(t);
       }
     }
-    return positiveTerminalList;
+    return sortTerminalList(positiveTerminalList);
   }
 
   /**
@@ -127,10 +155,14 @@ public class Network implements Serializable {
   public List<Terminal> getTerminals(){
     return _allTerminals;
   }
-  public List<Terminal> getSortedTerminals(List<Terminal> listaTerminaisOrdenados){
+  public List<Terminal> getSortedTerminals(){
     
-    Collections.sort(listaTerminaisOrdenados);
-    return listaTerminaisOrdenados;
+    
+    return sortTerminalList(_allTerminals);
+  }
+  public static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
+    Collections.sort(listaTerminais);
+    return listaTerminais;
   }
 
    
@@ -175,7 +207,7 @@ public class Network implements Serializable {
         
       }
     }
-    return unactiveTerminals;
+    return sortTerminalList(unactiveTerminals);
 }
   /**
    * registers a new termional in the network in case it does not already exist and assigns it to a client

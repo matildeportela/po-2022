@@ -12,7 +12,7 @@ enum TerminalState{
   OFF,
   SILENCE,
   OCCUPIED,
-  ON
+  
 }
 
 enum TerminalType{
@@ -31,8 +31,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   
   // FIXME define attributes
   private String _id;
-  private double _payment;
-  private double _debt;
+  private long _payment;
+  private long _debt;
   private String _owner;
   private List<Terminal> _friends;
   private TerminalState _state;
@@ -51,7 +51,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     _communicationList = new ArrayList<Communication>();
   }
   
-  public double getTerminalPayments(){
+  public long getTerminalPayments(){
     return _payment;
     
   }
@@ -68,15 +68,15 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   }
   public void turnOn(){
     if (_state == TerminalState.OFF){
-      _state = TerminalState.ON;
+      _state = TerminalState.IDLE;
     }
   }
 
-  public double getTerminalDebts(){
+  public long getTerminalDebts(){
     return _debt;
   }
 
-  public double getTerminalBalance(){
+  public long getTerminalBalance(){
     return _payment - _debt;
   }
 
