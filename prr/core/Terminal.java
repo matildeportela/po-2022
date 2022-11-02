@@ -38,6 +38,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private TerminalState _state;
   private TerminalType _type;
   private List<Communication> _communicationList;
+  private Communication _ongoingCommunication;
 
   // FIXME define contructor(s)
   public Terminal(String id, String owner, TerminalType type){

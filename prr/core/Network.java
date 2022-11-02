@@ -29,6 +29,7 @@ public class Network implements Serializable {
   private double _payment;
   private double _debt;
   private List<Terminal> _allTerminals;
+  private List<Communication> _communicationList;
 
 
 
