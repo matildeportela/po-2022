@@ -41,6 +41,9 @@ public class Client implements Serializable, Comparable<Client> {
     public double getClientDebt(){
         return _debt;
     }
+    public boolean hasDebt(){
+        return (_balance < 0);
+    }
 
     public String getKey(){
         return _key;
