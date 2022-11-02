@@ -4,15 +4,11 @@ abstract public class Plan {
     
     private String _name;
 
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
-    }
+    public abstract double computeTextCost(Client c, TextCommunication communication);
 
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
-    }
+    public abstract double computeVoiceCost(Client c, VoiceCommunication communication);
 
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
-    }
+    public abstract double computeVideoCost(Client c, VideoCommunication communication);
+
+  
 }

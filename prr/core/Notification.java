@@ -11,6 +11,6 @@ public class Notification {
     private NotificationType _type;
 
     public String toString(){
-        //todo
+        return "";//todo
     }
 }

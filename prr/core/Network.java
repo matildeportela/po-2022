@@ -187,7 +187,7 @@ public class Network implements Serializable {
     Terminal terminal;
     Client client;
     
-      client = getClient(clientId);
+    client = getClient(clientId);
       
     
     if(hasTerminal(terminalId)) {

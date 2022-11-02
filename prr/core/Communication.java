@@ -15,12 +15,21 @@ abstract public class Communication {
     private boolean _isOngoing;
     private CommunicationType _type;
           
-    public Communication(int id, Terminal origin, Terminal destination, boolean isOngoing){
+    public Communication(int id, Terminal origin, Terminal destination, boolean isOngoing, CommunicationType type){
         _id = id;
         _origin = origin;
         _destination = destination;
         _isOngoing = isOngoing;
+        _type = type;
     
+    }
+
+    public Communication(int id, Terminal origin, Terminal destination, CommunicationType type){
+        _id = id;
+        _origin = origin;
+        _destination = destination;
+        _isOngoing = false;
+        _type = type;
     }
 
     public int getId(){
@@ -40,17 +49,21 @@ abstract public class Communication {
     }
 
     public double computeCost(Plan plan){
-        //todo
+        return 0; //todo
     }
 
 
-    public int getsize(){
-        //todo
+    public int getSize(){
+        return 0; //todo
     }
 
 
     public String toString(){
-        //todo
+        
+        return ""; //todo
     }
 
+/*     public Client getClient() {
+        return _origin.getOwner();
+    } */
 }

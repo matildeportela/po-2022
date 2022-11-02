@@ -1,15 +1,17 @@
 package prr.core;
 
-public class BasicPlan extends Plan{
+public class BasicPlan extends Plan {
     
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
-    }
     
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
+    public double computeTextCost(Client c, TextCommunication communication){
+        return 0; //todo
     }
 
-    public double computeCost(Client c, TextCommunication communication){
-        //todo
+    public double computeVoiceCost(Client c, VoiceCommunication communication){
+        return 0; //todo
+    }
+
+    public double computeVideoCost(Client c, VideoCommunication communication){
+        return 0; //todo
+    }
 }
