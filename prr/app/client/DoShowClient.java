@@ -26,6 +26,7 @@ class DoShowClient extends Command<Network> {
     try{
       Client c = _receiver.getClient(key);
       _display.add(c.toString());
+      _display.addAll(c.getNotificationsList());
       _display.display();
     }
     catch(ClientNotFoundException cnfe){

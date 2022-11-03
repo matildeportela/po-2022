@@ -131,6 +131,9 @@ public class Client implements Serializable, Comparable<Client> {
         return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
     }
 
+    public List<Notification> getNotificationsList() {
+        return _notificationsList;
+    }
     
 
     public String toString(){
@@ -145,11 +148,6 @@ public class Client implements Serializable, Comparable<Client> {
             getTerminalsCount()+"|"+
             Math.round(getClientPayment())+"|"+
             Math.round(getClientDebt());
-            
-        for(Notification n: _notificationsList){
-            str += "\n" + n.toString();
-        }
-            
 
         return str;
     }
