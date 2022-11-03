@@ -39,7 +39,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   private List<Communication> _madeCommunications;
   private List<Communication> _receivedCommunications;
 
-  private Communication _ongoingCommunication; //todo??
+  private InteractiveCommunication _ongoingCommunication; //todo??
 
 
   public Terminal(String id, Client owner, TerminalType type){
@@ -83,11 +83,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _payment - _debt;
   }
 
-
-  public Communication getOngoingCommunication() {
+  public InteractiveCommunication getOngoingCommunication() {
     return _ongoingCommunication;
   }
-  public void setOngoingCommunication(Communication comm ) {
+  public void setOngoingCommunication(InteractiveCommunication comm ) {
     _ongoingCommunication = comm;
   }
 
@@ -95,6 +94,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     _ongoingCommunication = null;   //todo: usar padrão de null_object?!?!
   }
 
+  public boolean hasOngoingCommunication() {
+    return _ongoingCommunication != null;
+  }
 
 
   public boolean isOff(){
@@ -108,7 +110,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public boolean isBusy() {
-    return false; //todo...
+    return hasOngoingCommunication();
   }
 
   public String getId(){
@@ -223,8 +225,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
    *          it was the originator of this communication.
    **/
   public boolean canEndCurrentCommunication() {
-    // FIXME add implementation code
-    return false;
+    return isBusy() && _ongoingCommunication.getOriginTerminal().getId().equals(this.getId());
   }
   
   /**
@@ -233,7 +234,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
    * @return true if this terminal is neither off neither busy, false otherwise.
    **/
   public boolean canStartCommunication() {
-    return !isOff();
+    return !isOff() && !isBusy();
   }
 
 

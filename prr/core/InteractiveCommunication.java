@@ -26,9 +26,16 @@ abstract public class InteractiveCommunication extends Communication{
         getDestinationTerminal().setOngoingCommunication( this );
         _isOngoing = true;
     }
-    public void end() {
+    public double end( Plan plan, int duration ) {
         getOriginTerminal().resetOngoingCommunication();
         getDestinationTerminal().resetOngoingCommunication();
+
+        //calcula e actualiza o custo da comunicacao
+        setDuration( duration );
+        updateCost( plan );  //todo: será que devia ser aqui ???
+
         _isOngoing = false;
+
+        return getCost();
     }
 }

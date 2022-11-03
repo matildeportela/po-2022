@@ -31,6 +31,8 @@ public class Network implements Serializable {
   private static int _communicationAutoIncrement;
   private int _storedCommAutoIncrement;
 
+  private Plan _pricingPlan;
+
 
 
   // FIXME define contructor(s)
@@ -40,9 +42,8 @@ public class Network implements Serializable {
       _communicationList = new ArrayList<Communication>();
       _communicationAutoIncrement = 0;
       _storedCommAutoIncrement = 0;
+      _pricingPlan = new BasicPlan();
   }
-
-  // FIXME define methods
   
   /**
    * gets overall clients balance i.e. network balance
@@ -300,11 +301,11 @@ public class Network implements Serializable {
 
     TextCommunication comm = new TextCommunication( getNextCommId(), from, destination,  msg);
 
+    //calcula e actualiza o custo da comunicacao
+    comm.updateCost( _pricingPlan );
+
     //regista a comunicação na network e nos terminais intervenientes
     registerCommunication( comm );
-
-    //calcula e actualiza o custo da comunicacao
-    comm.updateCost( new BasicPlan() );
 
   }
 
@@ -335,6 +336,14 @@ public class Network implements Serializable {
     //iniciar a comunicação interativa
     comm.start();
 
+  }
+
+  public double endInteractiveCommunication(Terminal terminal, int duration) {
+    if(terminal.canEndCurrentCommunication()) {
+      //terminar a comunicação interativa ativa
+      return terminal.getOngoingCommunication().end( _pricingPlan , duration );
+    }
+    return 0;
   }
 
   protected void registerCommunication( Communication comm )
