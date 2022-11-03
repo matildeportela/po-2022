@@ -32,8 +32,7 @@ abstract public class InteractiveCommunication extends Communication{
 
         //calcula e actualiza o custo da comunicacao
         setDuration( duration );
-        updateCost( plan );  //todo: será que devia ser aqui ???
-
+        updateCost( plan );
         _isOngoing = false;
 
         return getCost();

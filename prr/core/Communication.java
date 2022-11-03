@@ -87,7 +87,7 @@ abstract public class Communication {
                 getOriginTerminal().getId()+ "|" +
                 getDestinationTerminal().getId()+ "|" +
                 getSize() + "|" +
-                getCost() + "|"+
+                Math.round(getCost()) + "|"+
                 getStatus();
 
         return str;

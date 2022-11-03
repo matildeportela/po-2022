@@ -92,7 +92,10 @@ public class Parser {
       String[] friends = components[2].split(",");
       
       for (String friend : friends)
-        _network.addFriend(terminal, friend);
+        _network.getTerminal(terminal).addFriend(
+                _network.getTerminal(friend)
+        );
+
     } catch (Exception e) {
       throw new UnrecognizedEntryException("Some message error in line:  " + line, e);
     }

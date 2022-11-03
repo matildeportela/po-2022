@@ -12,14 +12,13 @@ enum TerminalState{
   OFF,
   SILENCE,
   OCCUPIED,
-  
+  BUSY,
 }
 
 enum TerminalType{
   BASIC,
   FANCY
 }
-// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
  * Abstract terminal.
@@ -125,7 +124,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _friends;
   }
 
-  public TerminalState getTerminalState(){
+  public TerminalState getTerminalState() {
+    if(isBusy()) return TerminalState.BUSY;
     return _state;
   }
 

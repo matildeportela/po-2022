@@ -27,8 +27,8 @@ class DoAddFriend extends TerminalCommand {
       t = _network.getTerminal(key);
       _receiver.addFriend(t);
     }
-    catch(TerminalNotFoundException tnfe){
-      //throw new UnknownTerminalKeyException(key);  //todo: verificar se és suposto lancar alguma excepção
+    catch(TerminalNotFoundException tnfe) {
+      throw new UnknownTerminalKeyException(key);
     }
     catch(DuplicateTerminalException dte){
       //throw new DuplicateTerminalKeyException(key);  //todo: verificar se és suposto lancar alguma excepção

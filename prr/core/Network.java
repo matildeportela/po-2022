@@ -255,9 +255,6 @@ public class Network implements Serializable {
 
   }
 
-  public void addFriend(String terminal, String friend){
-
-  }
 
   public static int getNextCommId(){
     _communicationAutoIncrement += 1;
@@ -330,9 +327,6 @@ public class Network implements Serializable {
 
     InteractiveCommunication comm = InteractiveCommunicationFactory.make(type, getNextCommId(), from, destination );
 
-    //regista a comunicação na network e nos terminais intervenientes
-    registerCommunication( comm );
-
     //iniciar a comunicação interativa
     comm.start();
 
@@ -340,8 +334,16 @@ public class Network implements Serializable {
 
   public double endInteractiveCommunication(Terminal terminal, int duration) {
     if(terminal.canEndCurrentCommunication()) {
-      //terminar a comunicação interativa ativa
-      return terminal.getOngoingCommunication().end( _pricingPlan , duration );
+      InteractiveCommunication comm = terminal.getOngoingCommunication();
+
+      //terminar a comunicação interativa ativa e actualiza o custo
+      double cost = comm.end( _pricingPlan , duration );
+
+      //regista a comunicação na network e nos terminais intervenientes
+      registerCommunication( comm );
+
+      return cost;
+
     }
     return 0;
   }
