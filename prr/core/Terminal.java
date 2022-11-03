@@ -99,13 +99,11 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     }
   }
   public void turnOn(){
-    if (_state == TerminalState.OFF){
       TerminalState fromState = _state;
       _state = TerminalState.IDLE;
       triggerStateChangeEvent(fromState, _state);
-      
-    }
   }
+
   public void endOngoingCommunication(){
       TerminalState fromState = _state;
       resetOngoingCommunication();
@@ -155,8 +153,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return (_state == TerminalState.SILENCE);
   }
 
+  public boolean isIdle(){
+    return (_state == TerminalState.IDLE);
+  }
+
   public boolean isBusy() {
-    return hasOngoingCommunication();
+    return hasOngoingCommunication(); //todo: _state == TerminalState.BUSY ????
   }
 
   public boolean isActive(){
@@ -167,8 +169,6 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
       if(t2.getId() == t1.getId()){
         return true;
       }
-
-
     }
     return false;
   }
