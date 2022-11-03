@@ -16,7 +16,7 @@ class DoTurnOnTerminal extends TerminalCommand {
   
   @Override
   protected final void execute() throws CommandException {
-    if(_receiver.isOn()){
+    if(_receiver.isIdle()){
       _display.add(Message.alreadyOn());
       _display.display();
     }
