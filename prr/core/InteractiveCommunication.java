@@ -22,13 +22,13 @@ abstract public class InteractiveCommunication extends Communication{
     }
 
     public void start() {
-        getOriginTerminal().setOngoingCommunication( this );
-        getDestinationTerminal().setOngoingCommunication( this );
+        getOriginTerminal().startOngoingCommunication( this );
+        getDestinationTerminal().startOngoingCommunication( this );
         _isOngoing = true;
     }
     public double end( Plan plan, int duration ) {
-        getOriginTerminal().resetOngoingCommunication();
-        getDestinationTerminal().resetOngoingCommunication();
+        getOriginTerminal().endOngoingCommunication();
+        getDestinationTerminal().endOngoingCommunication();
 
         //calcula e actualiza o custo da comunicacao
         setDuration( duration );

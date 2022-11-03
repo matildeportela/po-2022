@@ -3,7 +3,7 @@ package prr.core;
 enum NotificationType{
     O2S,
     O2I,
-    B2S,
+    S2I,
     B2I
 }
 

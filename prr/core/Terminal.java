@@ -58,9 +58,39 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     
   }
 
+  public void triggerStateChangeEvent( TerminalState fromState, TerminalState toState ) {
+      
+    if(fromState == TerminalState.BUSY && toState == TerminalState.IDLE) {
+      getOwner().notifySubscribers(this, NotificationType.B2I);
+    }
+
+    else if(fromState == TerminalState.SILENCE && toState == TerminalState.IDLE) {
+      getOwner().notifySubscribers(this, NotificationType.S2I);
+    }
+
+    else if(fromState == TerminalState.OFF && toState == TerminalState.IDLE) {
+      getOwner().notifySubscribers(this, NotificationType.O2I);
+
+    }
+    else if(fromState == TerminalState.OFF && toState == TerminalState.SILENCE) {
+      getOwner().notifySubscribers(this, NotificationType.O2S);
+
+    }
+  }
+  
+
   public void setOnSilent() {
-    if (_state != TerminalState.OFF){
+    if (_state != TerminalState.OFF) {//todo verificar a regra de mudança de estado do terminal
+      TerminalState fromState = _state;
       _state = TerminalState.SILENCE;
+      triggerStateChangeEvent(fromState, _state);
+    }
+  } 
+  public void turnOffSilent() {
+    if (_state == TerminalState.SILENCE) {
+      TerminalState fromState = _state;
+      _state = TerminalState.IDLE;
+      triggerStateChangeEvent(fromState, _state);
     }
   } 
   public void turnOff() {
@@ -70,8 +100,25 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
   public void turnOn(){
     if (_state == TerminalState.OFF){
+      TerminalState fromState = _state;
       _state = TerminalState.IDLE;
+      triggerStateChangeEvent(fromState, _state);
+      
     }
+  }
+  public void endOngoingCommunication(){
+      TerminalState fromState = _state;
+      resetOngoingCommunication();
+      _state = TerminalState.IDLE;
+      triggerStateChangeEvent(fromState, _state);
+  }
+
+  public void startOngoingCommunication(InteractiveCommunication comm ){
+    
+      TerminalState fromState = _state;
+      setOngoingCommunication(comm);
+      _state = TerminalState.BUSY;
+      triggerStateChangeEvent(fromState, _state);
   }
 
   public long getTerminalDebts(){
