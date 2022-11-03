@@ -37,6 +37,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   private TerminalType _type;
   private List<Communication> _madeCommunications;
   private List<Communication> _receivedCommunications;
+  private TerminalState _previousState;
 
   private InteractiveCommunication _ongoingCommunication; //todo??
 
@@ -107,12 +108,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public void endOngoingCommunication(){
       TerminalState fromState = _state;
       resetOngoingCommunication();
-      _state = TerminalState.IDLE;
+      _state = getPreviousState();
       triggerStateChangeEvent(fromState, _state);
   }
 
   public void startOngoingCommunication(InteractiveCommunication comm ){
-    
+      storePreviousState(_state);
       TerminalState fromState = _state;
       setOngoingCommunication(comm);
       _state = TerminalState.BUSY;
@@ -141,6 +142,16 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public boolean hasOngoingCommunication() {
     return _ongoingCommunication != null;
   }
+
+  public TerminalState getPreviousState(){
+    return _previousState;
+  }
+
+  public void storePreviousState(TerminalState previousState){
+    _previousState = previousState;
+  }
+
+
 
 
   public boolean isOff(){
