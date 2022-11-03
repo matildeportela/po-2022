@@ -151,5 +151,8 @@ public class Client implements Serializable, Comparable<Client> {
 
         return str;
     }
+    public void deleteNotifications(){
+        _notificationsList = new ArrayList<Notification>();
+    }
 
 }

@@ -28,6 +28,7 @@ class DoShowClient extends Command<Network> {
       _display.add(c.toString());
       _display.addAll(c.getNotificationsList());
       _display.display();
+      c.deleteNotifications();
     }
     catch(ClientNotFoundException cnfe){
       throw new UnknownClientKeyException(key);
