@@ -31,7 +31,7 @@ public class Network implements Serializable {
   private static int _communicationAutoIncrement;
   private int _storedCommAutoIncrement;
 
-  private Plan _pricingPlan;
+  private static Plan _pricingPlan;
 
 
 
