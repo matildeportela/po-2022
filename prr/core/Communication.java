@@ -72,6 +72,10 @@ abstract public class Communication {
     public void updateCost( Plan plan ) {
         setCost( computeCost(plan) );
     }
+    public boolean isBetweenFriends(){
+        return getOriginTerminal().isFriend(getDestinationTerminal());
+
+    }
 
 
     abstract public double computeCost(Plan plan);

@@ -23,6 +23,8 @@ public class Client implements Serializable, Comparable<Client> {
     private double _balance;
     private List<Terminal> _terminalList;
     private ClientType _type;
+    private List<SubscriberInterface> _subscribersList;
+    private List<Notification> _notificationsList;
     
     
     public Client(String key, String name, int fiscalNumber){
@@ -32,6 +34,8 @@ public class Client implements Serializable, Comparable<Client> {
         _type = ClientType.NORMAL;
         _notifications = true;
         _terminalList = new ArrayList<Terminal>();
+        _notificationsList = new ArrayList<Notification>();
+        _subscribersList = new ArrayList<SubscriberInterface>();
     }
 
     public double getClientPayment(){
@@ -105,10 +109,28 @@ public class Client implements Serializable, Comparable<Client> {
         if(hasNotificationsEnabled()) return "YES";
         return "NO";
     }
+    public void subscribe(SubscriberInterface s){
+        if(hasNotificationsEnabled()) {
+            _subscribersList.add(s);//todo verificar se s ja é subscritor;
+        }
+       
+    }
+    public void notifySubscribers(Terminal eventTerminal, NotificationType event){
+        for(SubscriberInterface s : _subscribersList){
+            s.createNotification(eventTerminal.getId(), event);
+        }
+    }
+    public void addNotification(String terminalKey, NotificationType type){
+        Notification n = new Notification(type, terminalKey);
+        _notificationsList.add(n);//todo verificar se ja ha n na lista de notificações;
+
+    }
+
 
     public int compareTo(Client c) {
         return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
     }
+
     
 
     public String toString(){
@@ -123,6 +145,11 @@ public class Client implements Serializable, Comparable<Client> {
             getTerminalsCount()+"|"+
             Math.round(getClientPayment())+"|"+
             Math.round(getClientDebt());
+            
+        for(Notification n: _notificationsList){
+            str += "\n" + n.toString();
+        }
+            
 
         return str;
     }

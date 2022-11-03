@@ -17,7 +17,7 @@ public class TextCommunication extends Communication {
 
     @Override
     public double computeCost(Plan plan) {
-        //todo: falta ver se é amigo e aplicar os 50% de desconto
+        
         return plan.computeTextCost(getClient(), this);
     }
 

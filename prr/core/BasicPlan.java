@@ -36,6 +36,7 @@ public class BasicPlan extends Plan {
             default:
                 //todo??? o que acontece se não for nenhum destes?!?!?
         }
+        
         return cost;
     }
 
@@ -54,6 +55,9 @@ public class BasicPlan extends Plan {
                 break;
             default:
                 //todo??? o que acontece se não for nenhum destes?!?!?
+        }
+        if(communication.isBetweenFriends()){
+            cost = 0.5 * cost;
         }
         return cost;
         
@@ -74,6 +78,9 @@ public class BasicPlan extends Plan {
                 break;
             default:
                 //todo??? o que acontece se não for nenhum destes?!?!?
+        }
+        if(communication.isBetweenFriends()){
+            cost = 0.5 * cost;
         }
         return cost;
     }

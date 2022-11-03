@@ -115,7 +115,16 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public boolean isActive(){
     return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
   }
+  public boolean isFriend(Terminal t1){
+    for(Terminal t2 : _friends){
+      if(t2.getId() == t1.getId()){
+        return true;
+      }
 
+
+    }
+    return false;
+  }
   public String getId(){
     return _id;
   }
