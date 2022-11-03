@@ -287,7 +287,7 @@ public class Network implements Serializable {
   }
 
   public List<Communication> getCommunications() {
-      return _communicationList;
+      return _communicationList; //todo: return a cloned object
   }
 
   public void sendTextCommunication(Terminal from, String toKey, String msg) throws TerminalNotFoundException, TerminalOffException
@@ -299,22 +299,55 @@ public class Network implements Serializable {
     }
 
     TextCommunication comm = new TextCommunication( getNextCommId(), from, destination,  msg);
+
+    //regista a comunicação na network e nos terminais intervenientes
     registerCommunication( comm );
+
+    //calcula e actualiza o custo da comunicacao
+    comm.updateCost( new BasicPlan() );
+
+  }
+
+  public void startInteractiveCommunication(Terminal from, String toKey, String type)
+          throws TerminalNotFoundException, TerminalOffException, TerminalBusyException, TerminalIsSilentException, UnknownCommunicationType
+  {
+
+    //todo: se o terminal de origem não suportar interactive .. unsupportedAtOrigin
+    //todo: se o terminal de destino não suportar interactive .. unsupportedAtDestination
+
+    Terminal destination = getTerminal(toKey);
+
+    if(destination.isOff()) {
+      throw new TerminalOffException( toKey );
+    }
+    if(destination.isBusy()) {
+      throw new TerminalBusyException( toKey );
+    }
+    if(destination.isSilent()) {
+      throw new TerminalIsSilentException( toKey );
+    }
+
+    InteractiveCommunication comm = InteractiveCommunicationFactory.make(type, getNextCommId(), from, destination );
+
+    //regista a comunicação na network e nos terminais intervenientes
+    registerCommunication( comm );
+
+    //iniciar a comunicação interativa
+    comm.start();
 
   }
 
   protected void registerCommunication( Communication comm )
   {
-    //calcula e actualiza o custo da comunicacao
-    comm.updateCost( new BasicPlan() );
 
     //adiciona à lista de comunicacoes da network
     _communicationList.add( comm );
 
     //adiciona à lista de comunicacoes efetuadas do terminal de origem
-    comm.getOriginTerminal().addMadeCommunication( comm );
+    comm.getOriginTerminal().registerMadeCommunication( comm );
 
     //adiciona à lista de comunicacoes recebidas do terminal de destino
-    comm.getDestinationTerminal().addMadeCommunication( comm );
+    comm.getDestinationTerminal().addReceivedCommunication( comm );
+
   }
 }

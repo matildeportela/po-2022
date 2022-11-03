@@ -24,5 +24,9 @@ public class TextCommunication extends Communication {
     public int getSize(){
         return _message.length();
     }
-    
+
+    @Override
+    public boolean isOngoingCommunication() {
+        return false;
+    }
 }

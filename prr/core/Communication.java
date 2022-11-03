@@ -47,9 +47,14 @@ abstract public class Communication {
         return _type;
     }
 
-    public boolean isOngoingCommunication(){
-        return _isOngoing;
+    public boolean isInteractive() {
+        return (getType() == CommunicationType.VOICE || getType() == CommunicationType.VIDEO);
     }
+
+    public boolean isText() {
+        return (getType() == CommunicationType.TEXT);
+    }
+
 
     public String getStatus() {
         if(isOngoingCommunication()) return "ONGOING";
@@ -73,6 +78,8 @@ abstract public class Communication {
 
     abstract public int getSize();
 
+    abstract public boolean isOngoingCommunication();
+
     public String toString(){
         String str =
                 getType()+"|"+
@@ -88,5 +95,6 @@ abstract public class Communication {
 
      public Client getClient() {
         return getOriginTerminal().getOwner();
-    } 
+    }
+
 }

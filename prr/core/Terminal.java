@@ -24,12 +24,11 @@ enum TerminalType{
 /**
  * Abstract terminal.
  */
-abstract public class Terminal implements Serializable, Comparable<Terminal> /* FIXME maybe addd more interfaces */{
+abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202208091753L;
-  
-  // FIXME define attributes
+
   private String _id;
   private long _payment;
   private long _debt;
@@ -39,9 +38,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   private TerminalType _type;
   private List<Communication> _madeCommunications;
   private List<Communication> _receivedCommunications;
+
   private Communication _ongoingCommunication; //todo??
 
-  // FIXME define contructor(s)
+
   public Terminal(String id, Client owner, TerminalType type){
     _id = id;
     _owner = owner;
@@ -83,6 +83,20 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     return _payment - _debt;
   }
 
+
+  public Communication getOngoingCommunication() {
+    return _ongoingCommunication;
+  }
+  public void setOngoingCommunication(Communication comm ) {
+    _ongoingCommunication = comm;
+  }
+
+  public void resetOngoingCommunication() {
+    _ongoingCommunication = null;   //todo: usar padrão de null_object?!?!
+  }
+
+
+
   public boolean isOff(){
     return (_state == TerminalState.OFF);
   }
@@ -91,6 +105,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   }
   public boolean isSilent(){
     return (_state == TerminalState.SILENCE);
+  }
+
+  public boolean isBusy() {
+    return false; //todo...
   }
 
   public String getId(){
@@ -170,6 +188,15 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
     return orderedList;
   }
 
+  public void registerMadeCommunication( Communication comm ) {
+
+    //acrescenta a comm à lista de madeCommunications
+    addMadeCommunication(comm);
+
+    //atualiza os saldos
+    addDebt( comm.getCost() ); //todo: confirmar se é só isto
+  }
+
   public void addMadeCommunication( Communication comm ) {
     _madeCommunications.add(comm);
   }
@@ -181,7 +208,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
   public boolean isActive(){
     return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
   }
-  
+
+  public void addDebt( double value ) {
+    _debt += value;
+  }
 
   public int compareTo(Terminal t) {
     return Integer.parseInt(_id) - Integer.parseInt(t.getId());
@@ -224,4 +254,6 @@ abstract public class Terminal implements Serializable, Comparable<Terminal> /* 
 
     return terminalString;
   }
+
+
 }
