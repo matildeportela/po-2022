@@ -78,11 +78,15 @@ public class Client implements Serializable, Comparable<Client> {
         int n = 0;
 
         for(Terminal i : getTerminalList()){
-            if(!i.isOff()){
+            if(i.isActive()){
                 n++;
             }
         }
         return n;
+    }
+
+    public int getTerminalsCount(){
+        return getTerminalList().size();
     }
     
     public boolean hasNotificationsEnabled(){
@@ -116,7 +120,7 @@ public class Client implements Serializable, Comparable<Client> {
             getFiscalNumber()+ "|" + 
             getType() + "|" + 
             getNotificationStatus()+ "|"+
-            getActiveTerminalsCount()+"|"+
+            getTerminalsCount()+"|"+
             Math.round(getClientPayment())+"|"+
             Math.round(getClientDebt());
 

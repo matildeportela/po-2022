@@ -112,6 +112,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return hasOngoingCommunication();
   }
 
+  public boolean isActive(){
+    return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
+  }
+
   public String getId(){
     return _id;
   }
@@ -205,10 +209,6 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
   public void addReceivedCommunication( Communication comm ) {
     _receivedCommunications.add(comm);
-  }
-
-  public boolean isActive(){
-    return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
   }
 
   public void addDebt( double value ) {
