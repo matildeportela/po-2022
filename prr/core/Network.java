@@ -316,15 +316,15 @@ public class Network implements Serializable {
     Terminal destination = getTerminal(toKey);
 
     if(destination.isOff()) {
-      destination.getOwner().subscribe(
-              new NotificationSubscriber(from.getOwner(), toKey)
-      );
+      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
       throw new TerminalOffException( toKey );
     }
     if(destination.isBusy()) {
+      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
       throw new TerminalBusyException( toKey );
     }
     if(destination.isSilent()) {
+      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
       throw new TerminalIsSilentException( toKey );
     }
 
