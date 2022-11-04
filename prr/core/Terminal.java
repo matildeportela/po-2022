@@ -11,7 +11,6 @@ enum TerminalState{
   IDLE,
   OFF,
   SILENCE,
-  OCCUPIED,
   BUSY,
 }
 
@@ -106,7 +105,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     }
   } 
   public void turnOff() {
-    if (getState() != TerminalState.OCCUPIED){
+    if (getState() != TerminalState.BUSY){
       changeStateTo(TerminalState.OFF);
     }
   }
