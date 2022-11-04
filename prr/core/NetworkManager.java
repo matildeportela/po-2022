@@ -88,11 +88,11 @@ public class NetworkManager {
     return !getNetworkFilename().isEmpty();
   }
 
-  public void setNetworkFilename(String filename) {
+  protected void setNetworkFilename(String filename) {
     _networkFilename = filename;
   }
 
-  public String getNetworkFilename() {
+  protected String getNetworkFilename() {
     return _networkFilename;
   }
 

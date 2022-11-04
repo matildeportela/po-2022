@@ -32,7 +32,7 @@ public class Network implements Serializable {
 
 
 
-  public Network(){
+  Network(){
       _clientList = new ArrayList<Client> ();
       _allTerminals = new ArrayList<Terminal>();
       _communicationList = new ArrayList<Communication>();
@@ -126,7 +126,7 @@ public class Network implements Serializable {
   /**
    * checks if a client exists in the network
    */
-  public Boolean hasClient(String key) {
+  public boolean hasClient(String key) {
     for(Client c : _clientList){
 
       if(key.equals(c.getKey())){
@@ -223,8 +223,6 @@ public class Network implements Serializable {
       }
       
     }
-    
-    //terminal = TerminalFactory.create(terminalType);
 
     switch (terminalType) {
         case "BASIC" -> terminal = new BasicTerminal(terminalId, client);
@@ -243,16 +241,16 @@ public class Network implements Serializable {
   }
 
 
-  public static int getNextCommId(){
+  protected static int getNextCommId(){
     _communicationAutoIncrement += 1;
     return _communicationAutoIncrement;
   }
 
-  public void loadCommAutoincrement() {
+  void loadCommAutoincrement() {
     _communicationAutoIncrement = _storedCommAutoIncrement;
   }
 
-  public void storeCommAutoincrement() {
+  void storeCommAutoincrement() {
     _storedCommAutoIncrement = _communicationAutoIncrement;
   }
 
