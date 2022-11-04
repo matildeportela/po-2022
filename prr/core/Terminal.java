@@ -257,6 +257,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
     //atualiza os saldos
     addDebt( comm.getCost() ); //todo: confirmar se é só isto
+
+    //reavaliar se o cliente que fez a comunicação muda de tipo
+    getOwner().reEvaluateClientPlan();
   }
 
   protected void addMadeCommunication( Communication comm ) {
