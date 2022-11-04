@@ -4,29 +4,29 @@ abstract class InteractiveCommunication extends Communication{
     /* Duração da comunicação em minutos */
     private int _communicationDuration;
     private boolean _isOngoing;
-    
-    public InteractiveCommunication(int id, Terminal origin, Terminal destination, CommunicationType type){
+
+    protected InteractiveCommunication(int id, Terminal origin, Terminal destination, CommunicationType type){
         super(id, origin, destination, type);
     }
     
-    public int getSize(){
+    int getSize(){
         return _communicationDuration;
     }
-    public void setDuration( int durationInMinutes ) {
+    protected void setDuration( int durationInMinutes ) {
         _communicationDuration = durationInMinutes;
     }
 
     @Override
-    public boolean isOngoingCommunication() {
+    protected boolean isOngoingCommunication() {
         return _isOngoing;
     }
 
-    public void start() {
+    void start() {
         getOriginTerminal().startOngoingCommunication( this );
         getDestinationTerminal().startOngoingCommunication( this );
         _isOngoing = true;
     }
-    public double end( Plan plan, int duration ) {
+    double end( Plan plan, int duration ) {
         getOriginTerminal().endOngoingCommunication();
         getDestinationTerminal().endOngoingCommunication();
 

@@ -3,7 +3,7 @@ package prr.core;
 class NotificationSubscriber implements SubscriberInterface {
     private Client _notifyClient;
     private String _terminalKey;
-    public NotificationSubscriber(Client notifyClient, String terminalKey){
+    NotificationSubscriber(Client notifyClient, String terminalKey){
         _notifyClient = notifyClient;
         _terminalKey = terminalKey;
     }
@@ -12,10 +12,6 @@ class NotificationSubscriber implements SubscriberInterface {
         if(terminalKey.equals(_terminalKey)) {
             _notifyClient.addNotification(_terminalKey, type);
         }
-    }
-
-    public String getDestinationTerminalKey(){
-        return _terminalKey;
     }
     
 }

@@ -31,19 +31,19 @@ abstract class Communication {
         _type = type;
     }
 
-    public int getId(){
+    protected int getId(){
         return _id;
     }
 
-    public Terminal getOriginTerminal(){
+    Terminal getOriginTerminal(){
         return _origin;
     }
 
-    public Terminal getDestinationTerminal(){
+    Terminal getDestinationTerminal(){
         return _destination;
     }
 
-    public CommunicationType getType() {
+    protected CommunicationType getType() {
         return _type;
     }
 
@@ -64,33 +64,33 @@ abstract class Communication {
     }
 
 
-    public String getStatus() {
+    protected String getStatus() {
         if(isOngoingCommunication()) return "ONGOING";
         return "FINISHED";
     }
 
-    public double getCost() {
+    double getCost() {
         return _cost;
     }
 
-    public void setCost( double cost ) {
+    protected void setCost( double cost ) {
         _cost = cost;
     }
 
-    public void updateCost( Plan plan ) {
+    void updateCost( Plan plan ) {
         setCost( computeCost(plan) );
     }
-    public boolean isBetweenFriends(){
+    boolean isBetweenFriends(){
         return getOriginTerminal().isFriend(getDestinationTerminal());
 
     }
 
 
-    abstract public double computeCost(Plan plan);
+    abstract protected double computeCost(Plan plan);
 
-    abstract public int getSize();
+    abstract int getSize();
 
-    abstract public boolean isOngoingCommunication();
+    abstract protected boolean isOngoingCommunication();
 
     public String toString(){
         String str =
@@ -105,7 +105,7 @@ abstract class Communication {
         return str;
     }
 
-     public Client getClient() {
+     protected Client getClient() {
         return getOriginTerminal().getOwner();
     }
 
