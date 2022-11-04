@@ -83,7 +83,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   protected void changeStateTo(TerminalState toState) {
-    TerminalState fromState = _state;
+    TerminalState fromState = getState();
     _state = toState;
     triggerStateChangeEvent(fromState, toState);
   }
@@ -93,12 +93,12 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     changeStateTo(TerminalState.SILENCE);
   } 
   public void turnOffSilent() {
-    if (_state == TerminalState.SILENCE) {
+    if (getState() == TerminalState.SILENCE) {
       changeStateTo(TerminalState.IDLE);
     }
   } 
   public void turnOff() {
-    if (_state != TerminalState.OCCUPIED){
+    if (getState() != TerminalState.OCCUPIED){
       changeStateTo(TerminalState.OFF);
     }
   }
@@ -107,7 +107,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public void startOngoingCommunication(InteractiveCommunication comm ){
-    storePreviousState(_state);
+    storePreviousState( getState() );
     setOngoingCommunication(comm);
     changeStateTo( TerminalState.BUSY );
   }
@@ -152,21 +152,21 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
 
   public boolean isOff(){
-    return (_state == TerminalState.OFF);
+    return (getState() == TerminalState.OFF);
   }
   public boolean isOn(){
-    return (_state != TerminalState.OFF);
+    return (getState() != TerminalState.OFF);
   }
   public boolean isSilent(){
-    return (_state == TerminalState.SILENCE);
+    return (getState() == TerminalState.SILENCE);
   }
 
   public boolean isIdle(){
-    return (_state == TerminalState.IDLE);
+    return (getState() == TerminalState.IDLE);
   }
 
   public boolean isBusy() {
-    return (_state == TerminalState.BUSY);
+    return (getState() == TerminalState.BUSY);
   }
 
   public boolean isActive(){
@@ -192,7 +192,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _friends;
   }
 
-  public TerminalState getTerminalState() {
+  public TerminalState getState() {
     return _state;
   }
 
@@ -307,7 +307,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     getType() +"|"+
     getId() +"|"+
     getOwner().getKey() +"|"+
-    getTerminalState() +"|"+
+    getState() +"|"+
     Math.round(getTerminalPayments()) +"|"+
     Math.round(getTerminalDebts());
 
