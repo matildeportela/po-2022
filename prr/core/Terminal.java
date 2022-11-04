@@ -58,9 +58,13 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _payment;
     
   }
-  public long addTerminalPayments(long p){
-    _payment += p;
-    return _payment;
+
+  void removeDebt(long value) {
+    _debt -= value;
+  }
+
+  void addPayment(long value){
+    _payment += value;
   }
 
   
@@ -267,6 +271,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
     //reavaliar se o cliente que fez a comunicação muda de tipo
     getOwner().reEvaluateClientPlan();
+
+
   }
 
   protected void addMadeCommunication( Communication comm ) {

@@ -295,6 +295,15 @@ public class Network implements Serializable {
   public List<Communication> getCommunications() {
       return new ArrayList<>(_communicationList);
   }
+
+  protected Communication getCommunication( int commKey ) throws CommunicationNotFoundException {
+    for(Communication c: _communicationList) {
+      if(c.getId() == commKey) {
+        return c;
+      }
+    }
+    throw new CommunicationNotFoundException( Integer.toString(commKey) );
+  }
   
   public List<Communication> getCommunicationsFromClient(String key) throws ClientNotFoundException{
     ArrayList<Communication> communicationsFromClient = new ArrayList<Communication>();
@@ -418,5 +427,23 @@ public class Network implements Serializable {
     //adiciona à lista de comunicacoes recebidas do terminal de destino
     comm.getDestinationTerminal().addReceivedCommunication( comm );
 
+  }
+
+  public void makePayment(Terminal payingTerminal, int commKey) throws PaymentInvalidException, CommunicationNotFoundException {
+    Communication comm = getCommunication(commKey);
+
+    if(! payingTerminal.getId().equals( comm.getOriginTerminal().getId() )) {
+      throw new PaymentInvalidException( Integer.toString(commKey) );
+    }
+
+    if(comm.isPaid()) {
+      throw new PaymentInvalidException( Integer.toString(commKey) );
+    }
+
+    payingTerminal.removeDebt( (long) comm.getCost() );
+    payingTerminal.addPayment( (long) comm.getCost() );
+    comm.markAsPaid();
+
+    payingTerminal.getOwner().reEvaluateClientPlan();
   }
 }

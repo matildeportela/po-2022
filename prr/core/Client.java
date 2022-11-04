@@ -106,31 +106,33 @@ public class Client implements Serializable, Comparable<Client> {
     } 
 
     public void reEvaluateClientPlan(){
+        long balance = getBalance();
+
+        System.out.println("reEvaluateClientPlan:" + balance);
+
         if (_type == ClientType.NORMAL){
             //se o saldo do cliente apos o pagamento eh maior que 500 creditos
-            if (getBalance() > 500){ 
+            if (balance > 500){
                 _type = ClientType.GOLD;
             }
         } else if (_type == ClientType.GOLD){
             //se o saldo do cliente apos realizar uma comunicacao eh negativo
-            if (getBalance() < 0){
+            if (balance < 0){
                 _type = ClientType.NORMAL;
             }
             // se o cliente realizou 5 comm de video consec e nao tem saldo negativo
-            if ((getNumOfConsecutiveVideoCalls() > 5) && getBalance() > 0){
+            if ((getNumOfConsecutiveVideoCalls() > 5) && balance > 0){
                 _type = ClientType.PLATINUM;
             }
         } else if (_type == ClientType.PLATINUM){
             //se o saldo apos a comunicacao eh negativo
-            if (getBalance() < 0){
+            if (balance < 0){
                 _type = ClientType.NORMAL;
             }
             //se o cliente realizou 2 comm de texto consec e nao tem saldo negativo
-            if ((getNumOfConsecutiveTextMessages() > 2) && getBalance() > 0){
+            if ((getNumOfConsecutiveTextMessages() > 2) && balance > 0){
                 _type = ClientType.GOLD;
             }
-        } else{
-            //todo laca Exeption?
         }
     }
 

@@ -14,20 +14,13 @@ abstract class Communication {
     private double _cost;
     private boolean _isOngoing;
     private CommunicationType _type;
-          
-    public Communication(int id, Terminal origin, Terminal destination, boolean isOngoing, CommunicationType type){
-        _id = id;
-        _origin = origin;
-        _destination = destination;
-        _isOngoing = isOngoing;
-        _type = type;
-    }
 
     public Communication(int id, Terminal origin, Terminal destination, CommunicationType type){
         _id = id;
         _origin = origin;
         _destination = destination;
         _isOngoing = false;
+        _isPaid = false;
         _type = type;
     }
 
@@ -69,6 +62,10 @@ abstract class Communication {
         return "FINISHED";
     }
 
+    void markAsPaid() {
+        _isPaid = true;
+    }
+
     double getCost() {
         return _cost;
     }
@@ -80,6 +77,7 @@ abstract class Communication {
     void updateCost( Plan plan ) {
         setCost( computeCost(plan) );
     }
+
     boolean isBetweenFriends(){
         return getOriginTerminal().isFriend(getDestinationTerminal());
 
