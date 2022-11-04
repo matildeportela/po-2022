@@ -1,7 +1,9 @@
 package prr.core;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Queue;
 
 enum ClientType{
     NORMAL,
@@ -9,7 +11,7 @@ enum ClientType{
     PLATINUM
 }
 
-public class Client implements Serializable, Comparable<Client> {
+public class Client implements Serializable, Comparable<Client>, Subscribable {
 
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202208091753L;
@@ -20,13 +22,14 @@ public class Client implements Serializable, Comparable<Client> {
     private boolean _notifications;
     private List<Terminal> _terminalList;
     private ClientType _type;
-    private List<SubscriberInterface> _subscribersList;
+    private List<Subscriber> _subscribersList;
     private List<Notification> _notificationsList;
     private int _consecutiveVideoCalls;
     private int _consecutiveTextMessages;
     private CommunicationType _lastCommType;
-    
-    
+
+
+
     public Client(String key, String name, int fiscalNumber){
         _key = key;
         _name = name;
@@ -35,7 +38,7 @@ public class Client implements Serializable, Comparable<Client> {
         _notifications = true;
         _terminalList = new ArrayList<Terminal>();
         _notificationsList = new ArrayList<Notification>();
-        _subscribersList = new ArrayList<SubscriberInterface>();
+        _subscribersList = new ArrayList<Subscriber>();
         _lastCommType = null;
     }
 
@@ -136,7 +139,7 @@ public class Client implements Serializable, Comparable<Client> {
                 _type = ClientType.GOLD;
             }
         }
-        
+
     }
 
     
@@ -179,38 +182,47 @@ public class Client implements Serializable, Comparable<Client> {
         if(hasNotificationsEnabled()) return "YES";
         return "NO";
     }
-    public void subscribe(SubscriberInterface s){
-        if(hasNotificationsEnabled()) {
+
+
+    // implements Subscribable
+    @Override
+    public void subscribe(Subscriber s){
+        if( hasNotificationsEnabled() ) {
             _subscribersList.add(s);
         }
-       
     }
-    public void notifySubscribers(Terminal eventTerminal, NotificationType event){
-        for(SubscriberInterface s : _subscribersList){
-            s.createNotification(eventTerminal.getId(), event);
+
+    @Override
+    public void sendNotification(Notification notification) {
+        for(Subscriber s : _subscribersList){
+            s.notify( notification );
         }
     }
-    public void addNotification(String terminalKey, NotificationType type){
-        Notification newNotification = new Notification(type, terminalKey);
 
+
+    public void addToNotificationList(Notification notification) {
         for(Notification n : _notificationsList) {
-            if(n.toString().equals(newNotification.toString())) {
+            if(n.toString().equals(notification.toString())) {
                 //se já existir uma notificação igual... sai sem adicionar
                 return;
             }
         }
-        _notificationsList.add(newNotification);
+        _notificationsList.add(notification);
     }
 
-
-    public int compareTo(Client c) {
-        return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
+    public void deleteNotifications(){
+        _notificationsList = new ArrayList<Notification>();
     }
 
     public List<Notification> getNotificationsList() {
         return new ArrayList<>( _notificationsList );
     }
-    
+
+
+
+    public int compareTo(Client c) {
+        return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
+    }
 
     public String toString(){
 
@@ -227,8 +239,7 @@ public class Client implements Serializable, Comparable<Client> {
 
         return str;
     }
-    public void deleteNotifications(){
-        _notificationsList = new ArrayList<Notification>();
-    }
+
+
 
 }

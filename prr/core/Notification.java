@@ -1,5 +1,7 @@
 package prr.core;
 
+import java.io.Serializable;
+
 enum NotificationType{
     O2S,
     O2I,
@@ -7,7 +9,7 @@ enum NotificationType{
     B2I
 }
 
-class Notification {
+class Notification implements Serializable {
     private NotificationType _type;
     private String _terminalKey;
     public Notification(NotificationType type, String terminalKey){
