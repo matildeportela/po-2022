@@ -293,6 +293,7 @@ public class Network implements Serializable {
     Terminal destination = getTerminal(toKey);
 
     if(destination.isOff()) {
+      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
       throw new TerminalOffException( toKey );
     }
 

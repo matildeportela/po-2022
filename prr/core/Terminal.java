@@ -84,11 +84,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   
 
   public void setOnSilent() {
-    if (_state != TerminalState.OFF) {//todo verificar a regra de mudança de estado do terminal
       TerminalState fromState = _state;
       _state = TerminalState.SILENCE;
       triggerStateChangeEvent(fromState, _state);
-    }
   } 
   public void turnOffSilent() {
     if (_state == TerminalState.SILENCE) {
