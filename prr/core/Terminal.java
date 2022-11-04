@@ -42,6 +42,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   private InteractiveCommunication _ongoingCommunication; //todo??
 
 
+
   public Terminal(String id, Client owner, TerminalType type){
     _id = id;
     _owner = owner;
@@ -58,6 +59,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _payment;
     
   }
+
+  
 
   public void triggerStateChangeEvent( TerminalState fromState, TerminalState toState ) {
       
