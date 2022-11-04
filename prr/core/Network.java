@@ -293,7 +293,7 @@ public class Network implements Serializable {
     Terminal destination = getTerminal(toKey);
 
     if(destination.isOff()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalOffException( toKey );
     }
 
@@ -317,15 +317,15 @@ public class Network implements Serializable {
     Terminal destination = getTerminal(toKey);
 
     if(destination.isOff()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalOffException( toKey );
     }
     if(destination.isBusy()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalBusyException( toKey );
     }
     if(destination.isSilent()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalIsSilentException( toKey );
     }
 
@@ -350,6 +350,12 @@ public class Network implements Serializable {
 
     }
     return 0;
+  }
+
+  protected void subscribeFailedContact( Client from, Client to, String toTerminalKey) {
+    to.subscribe(
+       new NotificationSubscriber(from, toTerminalKey)
+    );
   }
 
   protected void registerCommunication( Communication comm )
