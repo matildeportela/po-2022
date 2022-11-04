@@ -81,44 +81,40 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
     }
   }
+
+  protected void changeStateTo(TerminalState toState) {
+    TerminalState fromState = _state;
+    _state = toState;
+    triggerStateChangeEvent(fromState, toState);
+  }
   
 
   public void setOnSilent() {
-      TerminalState fromState = _state;
-      _state = TerminalState.SILENCE;
-      triggerStateChangeEvent(fromState, _state);
+    changeStateTo(TerminalState.SILENCE);
   } 
   public void turnOffSilent() {
     if (_state == TerminalState.SILENCE) {
-      TerminalState fromState = _state;
-      _state = TerminalState.IDLE;
-      triggerStateChangeEvent(fromState, _state);
+      changeStateTo(TerminalState.IDLE);
     }
   } 
   public void turnOff() {
     if (_state != TerminalState.OCCUPIED){
-      _state = TerminalState.OFF;
+      changeStateTo(TerminalState.OFF);
     }
   }
   public void turnOn(){
-      TerminalState fromState = _state;
-      _state = TerminalState.IDLE;
-      triggerStateChangeEvent(fromState, _state);
+    changeStateTo(TerminalState.IDLE);
   }
 
   public void endOngoingCommunication(){
-      TerminalState fromState = _state;
-      resetOngoingCommunication();
-      _state = getPreviousState();
-      triggerStateChangeEvent(fromState, _state);
+    resetOngoingCommunication();
+    changeStateTo( getPreviousState() );
   }
 
   public void startOngoingCommunication(InteractiveCommunication comm ){
-      storePreviousState(_state);
-      TerminalState fromState = _state;
-      setOngoingCommunication(comm);
-      _state = TerminalState.BUSY;
-      triggerStateChangeEvent(fromState, _state);
+    storePreviousState(_state);
+    setOngoingCommunication(comm);
+    changeStateTo( TerminalState.BUSY );
   }
 
   public long getTerminalDebts(){
