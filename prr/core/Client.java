@@ -1,6 +1,5 @@
 package prr.core;
 import java.io.Serializable;
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,7 +23,8 @@ public class Client implements Serializable, Comparable<Client> {
     private List<SubscriberInterface> _subscribersList;
     private List<Notification> _notificationsList;
     private int _consecutiveVideoCalls;
-    private int _consectiveTextMessages;
+    private int _consecutiveTextMessages;
+    private CommunicationType _lastCommType;
     
     
     public Client(String key, String name, int fiscalNumber){
@@ -36,6 +36,7 @@ public class Client implements Serializable, Comparable<Client> {
         _terminalList = new ArrayList<Terminal>();
         _notificationsList = new ArrayList<Notification>();
         _subscribersList = new ArrayList<SubscriberInterface>();
+        _lastCommType = null;
     }
 
     public long getClientPayment(){
@@ -82,33 +83,34 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public int getNumOfConsecutiveVideoCalls(){
-        return _consecutiveVideoCalls;
+        return _consecutiveVideoCalls + 1;
     }
 
     public int getNumOfConsecutiveTextMessages(){
-        return _consectiveTextMessages;
+        return _consecutiveTextMessages + 1;
     }
 
-    public int incrementVideoCallsCount(){
-        return _consecutiveVideoCalls++;
-    }
 
-    public int incrementTextMessagesCount(){
-        return _consectiveTextMessages++;
-    }
+    public void updateConsecutiveCalls( CommunicationType commType ) {
 
-    public int resetVideoCallsCount(){
-        return _consecutiveVideoCalls = 0;
-    }
+        if( commType == _lastCommType && commType == CommunicationType.VIDEO ) {
+            _consecutiveVideoCalls++;
+        } else {
+            _consecutiveVideoCalls = 0;
+        }
 
-    public int resetTextMessagesCount(){
-        return _consectiveTextMessages = 0;
-    } 
+        if( commType == _lastCommType && commType == CommunicationType.TEXT ) {
+            _consecutiveTextMessages++;
+        } else {
+            _consecutiveTextMessages = 0;
+        }
+
+        _lastCommType = commType;
+
+    }
 
     public void reEvaluateClientPlan(){
         long balance = getBalance();
-
-        System.out.println("reEvaluateClientPlan:" + balance);
 
         if (_type == ClientType.NORMAL){
             //se o saldo do cliente apos o pagamento eh maior que 500 creditos
@@ -121,7 +123,7 @@ public class Client implements Serializable, Comparable<Client> {
                 _type = ClientType.NORMAL;
             }
             // se o cliente realizou 5 comm de video consec e nao tem saldo negativo
-            if ((getNumOfConsecutiveVideoCalls() > 5) && balance > 0){
+            else if (getNumOfConsecutiveVideoCalls() >= 5) {
                 _type = ClientType.PLATINUM;
             }
         } else if (_type == ClientType.PLATINUM){
@@ -130,10 +132,11 @@ public class Client implements Serializable, Comparable<Client> {
                 _type = ClientType.NORMAL;
             }
             //se o cliente realizou 2 comm de texto consec e nao tem saldo negativo
-            if ((getNumOfConsecutiveTextMessages() > 2) && balance > 0){
+            else if (getNumOfConsecutiveTextMessages() >= 2){
                 _type = ClientType.GOLD;
             }
         }
+        
     }
 
     
@@ -178,7 +181,7 @@ public class Client implements Serializable, Comparable<Client> {
     }
     public void subscribe(SubscriberInterface s){
         if(hasNotificationsEnabled()) {
-            _subscribersList.add(s);//todo verificar se s ja é subscritor;
+            _subscribersList.add(s);
         }
        
     }

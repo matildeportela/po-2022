@@ -54,11 +54,12 @@ class DoStartInteractiveCommunication extends TerminalCommand {
       _display.display();
     }
     catch (UnsuportedCommunication e) {
-      //todo: o que fazer quando o terminal tentar ligar para si proprio????
+      //se o terminal tentar ligar para si proprio... dá busy
+      _display.add(Message.destinationIsBusy(destTerminalKey));
+      _display.display();
     }
     catch (UnknownCommunicationType e){
-      //todo: ????
+      //em principio nunca acontece
     }
-
   }
 }

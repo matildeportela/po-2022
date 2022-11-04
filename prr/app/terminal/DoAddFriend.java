@@ -30,7 +30,8 @@ class DoAddFriend extends TerminalCommand {
       throw new UnknownTerminalKeyException(key);
     }
     catch(DuplicateTerminalException dte){
-      //throw new DuplicateTerminalKeyException(key);  //todo: verificar se és suposto lancar alguma excepção
+      //nao sabemos o que é suposto fazer nesta situação...
+      //throw new DuplicateTerminalKeyException(key);
     }
     
 

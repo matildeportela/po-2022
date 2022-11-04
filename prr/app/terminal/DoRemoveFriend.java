@@ -24,7 +24,8 @@ class DoRemoveFriend extends TerminalCommand {
       _receiver.removeFriend(key);
     }
     catch(UnknownTerminalKeyException utke){
-      //throw new UnknownTerminalKeyException(key); //todo: verificar se és suposto lancar alguma excepção
+      //nao sabemos o que é suposto fazer nesta situação...
+      //throw new UnknownTerminalKeyException(key);
     }
   }
 }
