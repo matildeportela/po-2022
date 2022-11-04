@@ -1,5 +1,6 @@
 package prr.core;
 import java.io.Serializable;
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -18,12 +19,14 @@ public class Client implements Serializable, Comparable<Client> {
     private String _name;
     private int _fiscalNumber;
     private boolean _notifications;
-    private double _balance;
     private List<Terminal> _terminalList;
     private ClientType _type;
     private List<SubscriberInterface> _subscribersList;
     private List<Notification> _notificationsList;
-
+    private int _consecutiveVideoCalls;
+    private int _consectiveTextMessages;
+    
+    
     public Client(String key, String name, int fiscalNumber){
         _key = key;
         _name = name;
@@ -58,6 +61,7 @@ public class Client implements Serializable, Comparable<Client> {
         return (_balance < 0);
     }
 
+
     public String getKey(){
         return _key;
     }
@@ -79,6 +83,64 @@ public class Client implements Serializable, Comparable<Client> {
         return _type;
     }
 
+    public boolean hasDebt(){
+        return (getBalance() < 0);
+    }
+
+    public int getNumOfConsecutiveVideoCalls(){
+        return _consecutiveVideoCalls;
+    }
+
+    public int getNumOfConsecutiveTextMessages(){
+        return _consectiveTextMessages;
+    }
+
+    public int incrementVideoCallsCount(){
+        return _consecutiveVideoCalls++;
+    }
+
+    public int incrementTextMessagesCount(){
+        return _consectiveTextMessages++;
+    }
+
+    public int resetVideoCallsCount(){
+        return _consecutiveVideoCalls = 0;
+    }
+
+    public int resetTextMessagesCount(){
+        return _consectiveTextMessages = 0;
+    } 
+
+    public void reEvaluateClientPlan(){
+        if (_type == ClientType.NORMAL){
+            //se o saldo do cliente apos o pagamento eh maior que 500 creditos
+            if (getBalance() > 500){ 
+                _type = ClientType.GOLD;
+            }
+        } else if (_type == ClientType.GOLD){
+            //se o saldo do cliente apos realizar uma comunicacao eh negativo
+            if (getBalance() < 0){
+                _type = ClientType.NORMAL;
+            }
+            // se o cliente realizou 5 comm de video consec e nao tem saldo negativo
+            if ((getNumOfConsecutiveVideoCalls() > 5) && getBalance() > 0){
+                _type = ClientType.PLATINUM;
+            }
+        } else if (_type == ClientType.PLATINUM){
+            //se o saldo apos a comunicacao eh negativo
+            if (getBalance() < 0){
+                _type = ClientType.NORMAL;
+            }
+            //se o cliente realizou 2 comm de texto consec e nao tem saldo negativo
+            if ((getNumOfConsecutiveTextMessages() > 2) && getBalance() > 0){
+                _type = ClientType.GOLD;
+            }
+        } else{
+            //todo laca Exeption?
+        }
+    }
+
+    
     public void addTerminal(Terminal t){
         _terminalList.add(t);
     }
@@ -90,7 +152,7 @@ public class Client implements Serializable, Comparable<Client> {
     public int getActiveTerminalsCount(){
         int n = 0;
 
-        for(Terminal i : _terminalList){
+        for(Terminal i : getTerminalList()){
             if(i.isActive()){
                 n++;
             }
