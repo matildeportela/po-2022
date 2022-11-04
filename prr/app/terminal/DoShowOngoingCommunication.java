@@ -16,7 +16,7 @@ class DoShowOngoingCommunication extends TerminalCommand {
   
   @Override
   protected final void execute() throws CommandException {
-    if(!_receiver.hasOngoingCommunication()) {
+    if(!_receiver.isBusy()) {
       _display.add(Message.noOngoingCommunication());
     } else {
       _display.add(_receiver.getOngoingCommunication());

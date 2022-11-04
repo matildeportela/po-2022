@@ -106,15 +106,15 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     changeStateTo(TerminalState.IDLE);
   }
 
-  public void endOngoingCommunication(){
-    resetOngoingCommunication();
-    changeStateTo( getPreviousState() );
-  }
-
   public void startOngoingCommunication(InteractiveCommunication comm ){
     storePreviousState(_state);
     setOngoingCommunication(comm);
     changeStateTo( TerminalState.BUSY );
+  }
+
+  public void endOngoingCommunication(){
+    resetOngoingCommunication();
+    changeStateTo( getPreviousState() );
   }
 
   public long getTerminalDebts(){
@@ -166,7 +166,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public boolean isBusy() {
-    return hasOngoingCommunication(); //todo: _state == TerminalState.BUSY ????
+    return (_state == TerminalState.BUSY);
   }
 
   public boolean isActive(){
@@ -193,7 +193,6 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public TerminalState getTerminalState() {
-    if(isBusy()) return TerminalState.BUSY;
     return _state;
   }
 
