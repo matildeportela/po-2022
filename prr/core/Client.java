@@ -56,12 +56,6 @@ public class Client implements Serializable, Comparable<Client> {
         return clientDebts;
     }
         
-    
-    public boolean hasDebt(){
-        return (_balance < 0);
-    }
-
-
     public String getKey(){
         return _key;
     }
@@ -74,9 +68,9 @@ public class Client implements Serializable, Comparable<Client> {
         return _fiscalNumber;
     }
 
-    public double getBalance(){
-        _balance = getClientPayment() - getClientDebt();
-        return _balance;
+    public long getBalance(){
+        return getClientPayment() - getClientDebt();
+        
     }
 
     public ClientType getType(){
