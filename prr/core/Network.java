@@ -274,7 +274,37 @@ public class Network implements Serializable {
   public List<Communication> getCommunications() {
       return new ArrayList<>(_communicationList);
   }
-
+  
+  public List<Communication> getCommunicationsFromClient(String key) throws ClientNotFoundException{
+    ArrayList<Communication> communicationsFromClient = new ArrayList<Communication>();
+    for(Client C: _clientList){
+      if(C.getKey().equals(key)){
+        for(Terminal t : C.getTerminalList()){
+          for(Communication c: t.getMadeCommunication()){
+            communicationsFromClient.add(c);
+            
+          }
+        }
+        return communicationsFromClient;
+      }
+    }
+    throw new ClientNotFoundException(key);
+  }
+  public List<Communication> getCommunicationsToClient(String key) throws ClientNotFoundException{
+    ArrayList<Communication> communicationsToClient = new ArrayList<Communication>();
+    for(Client C: _clientList){
+      if(C.getKey().equals(key)){
+        for(Terminal t : C.getTerminalList()){
+          for(Communication c: t.getReceivedCommunication()){
+            communicationsToClient.add(c);
+            
+          }
+        }
+        return communicationsToClient;
+      }
+    }
+    throw new ClientNotFoundException(key);
+  }
   public void sendTextCommunication(Terminal from, String toKey, String msg) throws TerminalNotFoundException, TerminalOffException
   {
     Terminal destination = getTerminal(toKey);

@@ -168,7 +168,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public boolean isActive(){
-    return (_madeCommunications.size() > 0 || _receivedCommunications.size() >0);
+    return (_madeCommunications.size() > 0 || _receivedCommunications.size() > 0);
   }
   public boolean isFriend(Terminal t1){
     for(Terminal t2 : _friends){
@@ -263,8 +263,14 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   protected void addMadeCommunication( Communication comm ) {
     _madeCommunications.add(comm);
   }
-
+  public List<Communication> getMadeCommunication(){//todo verificar se é public;
+    return _madeCommunications;
+  }
+  public List<Communication> getReceivedCommunication(){//todo verificar se é public;
+    return _receivedCommunications;
+  }  
   protected void addReceivedCommunication( Communication comm ) {
+    
     _receivedCommunications.add(comm);
   }
 
