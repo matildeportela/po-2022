@@ -4,9 +4,9 @@ import prr.core.Client;
 import prr.core.Network;
 import prr.app.exception.UnknownClientKeyException;
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
+
 import prr.core.exception.ClientNotFoundException;
-//FIXME add more imports if needed
+
 
 /**
  * Show specific client: also show previous notifications.

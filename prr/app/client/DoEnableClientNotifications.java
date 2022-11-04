@@ -6,7 +6,6 @@ import prr.app.exception.UnknownClientKeyException;
 import prr.core.exception.ClientNotFoundException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Enable client notifications.

@@ -9,11 +9,9 @@ import prr.app.exception.InvalidTerminalKeyException;
 import prr.app.exception.UnknownClientKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-import prr.core.Terminal;
+
 import prr.core.exception.ClientNotFoundException;
 import prr.core.exception.DuplicateTerminalException;
-//FIXME add more imports if needed
-import prr.core.exception.RegisterTerminalException;
 import prr.core.exception.UnrecognizedEntryException;
 
 /**
@@ -31,7 +29,6 @@ class DoRegisterTerminal extends Command<Network> {
 
   @Override
   protected final void execute() throws DuplicateTerminalKeyException, InvalidTerminalKeyException, UnknownClientKeyException{
-    //FIXME implement command
     String key = stringField("key");
     String type = optionField("type");
     String owner = stringField("owner");

@@ -3,9 +3,8 @@ package prr.app.client;
 import prr.core.Network;
 import prr.app.exception.DuplicateClientKeyException;
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
 import prr.core.exception.RegisterClientException;
-//FIXME add more imports if needed
+
 
 /**
  * Register new client.
@@ -21,7 +20,7 @@ class DoRegisterClient extends Command<Network> {
   
   @Override
   protected final void execute() throws DuplicateClientKeyException {
-    //FIXME implement command
+
     String key = stringField("key");
     String name = stringField("name");
     int tax = integerField("tax");
