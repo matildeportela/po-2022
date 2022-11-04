@@ -32,7 +32,7 @@ class DoSaveFile extends Command<NetworkManager> {
       }
 
     } catch (Exception e) {
-      e.printStackTrace(); //todo!
+      e.printStackTrace(); //nao sabemos o que fazer por isso mostramos o erro
     }
   }
 }

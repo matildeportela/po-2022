@@ -33,8 +33,7 @@ class BasicPlan extends Plan {
                     cost = 4;
                 }
                 break;
-            default:
-                //todo??? o que acontece se não for nenhum destes?!?!?
+
         }
         
         return cost;
@@ -53,8 +52,6 @@ class BasicPlan extends Plan {
             case PLATINUM:
                 cost = 10 * duration;
                 break;
-            default:
-                //todo??? o que acontece se não for nenhum destes?!?!?
         }
         if(communication.isBetweenFriends()){
             cost = 0.5 * cost;
@@ -76,8 +73,6 @@ class BasicPlan extends Plan {
             case PLATINUM:
                 cost = 10 * duration;
                 break;
-            default:
-                //todo??? o que acontece se não for nenhum destes?!?!?
         }
         if(communication.isBetweenFriends()){
             cost = 0.5 * cost;

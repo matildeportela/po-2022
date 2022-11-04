@@ -39,7 +39,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   private List<Communication> _receivedCommunications;
   private TerminalState _previousState;
 
-  private InteractiveCommunication _ongoingCommunication; //todo??
+  private InteractiveCommunication _ongoingCommunication;
 
 
   protected Terminal(String id, Client owner, TerminalType type){
@@ -57,6 +57,14 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public long getTerminalPayments(){
     return _payment;
     
+  }
+
+  void removeDebt(long value) {
+    _debt -= value;
+  }
+
+  void addPayment(long value){
+    _payment += value;
   }
 
   
@@ -120,6 +128,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public long getTerminalDebts(){
     return _debt;
   }
+  public long addTerminalDebt(long d){
+    return _debt += d;
+  }
 
   public long getTerminalBalance(){
     return _payment - _debt;
@@ -133,7 +144,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   protected void resetOngoingCommunication() {
-    _ongoingCommunication = null;   //todo: usar padrão de null_object?!?!
+    _ongoingCommunication = null;
   }
 
   public boolean hasOngoingCommunication() {
@@ -256,16 +267,24 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     addMadeCommunication(comm);
 
     //atualiza os saldos
-    addDebt( comm.getCost() ); //todo: confirmar se é só isto
+    addDebt( comm.getCost() );
+
+    //atualiza as comunicaoes consecutivas de video ou text
+    getOwner().updateConsecutiveCalls( comm.getType() );
+
+    //reavaliar se o cliente que fez a comunicação muda de tipo
+    getOwner().reEvaluateClientPlan();
+
+
   }
 
   protected void addMadeCommunication( Communication comm ) {
     _madeCommunications.add(comm);
   }
-  public List<Communication> getMadeCommunication(){//todo verificar se é public;
+  List<Communication> getMadeCommunication(){
     return _madeCommunications;
   }
-  public List<Communication> getReceivedCommunication(){//todo verificar se é public;
+  public List<Communication> getReceivedCommunication(){
     return _receivedCommunications;
   }  
   protected void addReceivedCommunication( Communication comm ) {

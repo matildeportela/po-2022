@@ -19,10 +19,8 @@ public class Network implements Serializable {
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202208091753L;
 
-  private double _balance;
+  
   private List<Client> _clientList;
-  private double _payment;
-  private double _debt;
   private List<Terminal> _allTerminals;
   private List<Communication> _communicationList;
   private static int _communicationAutoIncrement;
@@ -45,16 +43,54 @@ public class Network implements Serializable {
   /**
    * gets overall clients balance i.e. network balance
    */
-  public double getBalance(){
+  public long getBalance(){
+    long totalPayments = 0;
+    long totalDebts = 0;
     for(Client c : _clientList){
-      _payment += c.getClientPayment();
-      _debt += c.getClientDebt();
-      
-      
+      totalPayments += c.getClientPayment();
+      totalDebts += c.getClientDebt();
     }
-    _balance = _payment - _debt;
-    return _balance;
+    return totalPayments - totalDebts;
   }
+  public long getTotalPayments(){
+    long totalPayments = 0;
+    for(Client c : _clientList){
+      totalPayments += c.getClientPayment();
+    }
+    return totalPayments;
+  }
+  public long getTotalDebts(){
+    long totalDebts = 0;
+    for(Client c : _clientList){
+      totalDebts += c.getClientDebt();
+    }
+    return totalDebts;
+  }
+      
+      
+   
+
+  public long getPaymentsFromClient(String key) throws ClientNotFoundException{
+    
+    for(Client c : _clientList){
+      if(c.getKey().equals(key)){
+        return c.getClientPayment();
+      }
+    }
+    throw new ClientNotFoundException(key);
+
+  }
+  public long getDebtsFromClient(String key) throws ClientNotFoundException{
+    
+    for(Client c : _clientList){
+      if(c.getKey().equals(key)){
+        return c.getClientDebt();
+      }
+    }
+    throw new ClientNotFoundException(key);
+
+  }
+  
 
   protected void addClient(Client c){
     _clientList.add(c);
@@ -272,6 +308,15 @@ public class Network implements Serializable {
   public List<Communication> getCommunications() {
       return new ArrayList<>(_communicationList);
   }
+
+  protected Communication getCommunication( int commKey ) throws CommunicationNotFoundException {
+    for(Communication c: _communicationList) {
+      if(c.getId() == commKey) {
+        return c;
+      }
+    }
+    throw new CommunicationNotFoundException( Integer.toString(commKey) );
+  }
   
   public List<Communication> getCommunicationsFromClient(String key) throws ClientNotFoundException{
     ArrayList<Communication> communicationsFromClient = new ArrayList<Communication>();
@@ -395,5 +440,23 @@ public class Network implements Serializable {
     //adiciona à lista de comunicacoes recebidas do terminal de destino
     comm.getDestinationTerminal().addReceivedCommunication( comm );
 
+  }
+
+  public void makePayment(Terminal payingTerminal, int commKey) throws PaymentInvalidException, CommunicationNotFoundException {
+    Communication comm = getCommunication(commKey);
+
+    if(! payingTerminal.getId().equals( comm.getOriginTerminal().getId() )) {
+      throw new PaymentInvalidException( Integer.toString(commKey) );
+    }
+
+    if(comm.isPaid()) {
+      throw new PaymentInvalidException( Integer.toString(commKey) );
+    }
+
+    payingTerminal.removeDebt( (long) comm.getCost() );
+    payingTerminal.addPayment( (long) comm.getCost() );
+    comm.markAsPaid();
+
+    payingTerminal.getOwner().reEvaluateClientPlan();
   }
 }
