@@ -1,4 +1,5 @@
 package prr.core;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ enum ClientType{
     PLATINUM
 }
 
-public class Client implements Serializable, Comparable<Client> {
+public class Client implements Serializable, Comparable<Client>, Subscribable {
 
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202208091753L;
@@ -20,13 +21,14 @@ public class Client implements Serializable, Comparable<Client> {
     private boolean _notifications;
     private List<Terminal> _terminalList;
     private ClientType _type;
-    private List<SubscriberInterface> _subscribersList;
+    private List<Subscriber> _subscribersList;
     private List<Notification> _notificationsList;
     private int _consecutiveVideoCalls;
     private int _consecutiveTextMessages;
     private CommunicationType _lastCommType;
-    
-    
+
+
+
     public Client(String key, String name, int fiscalNumber){
         _key = key;
         _name = name;
@@ -35,11 +37,11 @@ public class Client implements Serializable, Comparable<Client> {
         _notifications = true;
         _terminalList = new ArrayList<Terminal>();
         _notificationsList = new ArrayList<Notification>();
-        _subscribersList = new ArrayList<SubscriberInterface>();
+        _subscribersList = new ArrayList<Subscriber>();
         _lastCommType = null;
     }
 
-    public long getClientPayment(){
+    long getClientPayment(){
         long clientPayments = 0;
         for(Terminal t: _terminalList){
             clientPayments += t.getTerminalPayments();
@@ -48,7 +50,7 @@ public class Client implements Serializable, Comparable<Client> {
         return clientPayments;
     }
 
-    public long getClientDebt(){
+    long getClientDebt(){
         long clientDebts = 0;
         for(Terminal t: _terminalList){
             clientDebts += t.getTerminalDebts();
@@ -57,41 +59,41 @@ public class Client implements Serializable, Comparable<Client> {
         return clientDebts;
     }
         
-    public String getKey(){
+    String getKey(){
         return _key;
     }
 
-    public String getName(){
+    String getName(){
         return _name;
     }
 
-    public int getFiscalNumber(){
+    int getFiscalNumber(){
         return _fiscalNumber;
     }
 
-    public long getBalance(){
+    long getBalance(){
         return getClientPayment() - getClientDebt();
         
     }
 
-    public ClientType getType(){
+    ClientType getType(){
         return _type;
     }
 
-    public boolean hasDebt(){
+    boolean hasDebt(){
         return (getBalance() < 0);
     }
 
-    public int getNumOfConsecutiveVideoCalls(){
+    private int getNumOfConsecutiveVideoCalls(){
         return _consecutiveVideoCalls + 1;
     }
 
-    public int getNumOfConsecutiveTextMessages(){
+    private int getNumOfConsecutiveTextMessages(){
         return _consecutiveTextMessages + 1;
     }
 
 
-    public void updateConsecutiveCalls( CommunicationType commType ) {
+    void updateConsecutiveCalls( CommunicationType commType ) {
 
         if( commType == _lastCommType && commType == CommunicationType.VIDEO ) {
             _consecutiveVideoCalls++;
@@ -109,7 +111,7 @@ public class Client implements Serializable, Comparable<Client> {
 
     }
 
-    public void reEvaluateClientPlan(){
+    void reEvaluateClientPlan(){
         long balance = getBalance();
 
         if (_type == ClientType.NORMAL){
@@ -136,31 +138,20 @@ public class Client implements Serializable, Comparable<Client> {
                 _type = ClientType.GOLD;
             }
         }
-        
+
     }
 
     
-    public void addTerminal(Terminal t){
+    void addTerminal(Terminal t){
         _terminalList.add(t);
     }
 
-    public List<Terminal> getTerminalList(){
+    List<Terminal> getTerminalList(){
         return new ArrayList<>( _terminalList );
     }
 
-    public int getActiveTerminalsCount(){
-        int n = 0;
-
-        for(Terminal i : _terminalList){
-            if(i.isActive()){
-                n++;
-            }
-        }
-        return n;
-    }
-
-    public int getTerminalsCount(){
-        return _terminalList.size();
+    private int getTerminalsCount(){
+        return getTerminalList().size();
     }
     
     public boolean hasNotificationsEnabled(){
@@ -175,42 +166,51 @@ public class Client implements Serializable, Comparable<Client> {
         _notifications = false;
     }
 
-    public String getNotificationStatus() {
+    private String getNotificationStatus() {
         if(hasNotificationsEnabled()) return "YES";
         return "NO";
     }
-    public void subscribe(SubscriberInterface s){
-        if(hasNotificationsEnabled()) {
+
+
+    // implements Subscribable
+    @Override
+    public void subscribe(Subscriber s){
+        if( hasNotificationsEnabled() ) {
             _subscribersList.add(s);
         }
-       
     }
-    public void notifySubscribers(Terminal eventTerminal, NotificationType event){
-        for(SubscriberInterface s : _subscribersList){
-            s.createNotification(eventTerminal.getId(), event);
+
+    @Override
+    public void sendNotification(Notification notification) {
+        for(Subscriber s : _subscribersList){
+            s.notify( notification );
         }
     }
-    public void addNotification(String terminalKey, NotificationType type){
-        Notification newNotification = new Notification(type, terminalKey);
 
+
+    void addToNotificationList(Notification notification) {
         for(Notification n : _notificationsList) {
-            if(n.toString().equals(newNotification.toString())) {
+            if(n.toString().equals(notification.toString())) {
                 //se já existir uma notificação igual... sai sem adicionar
                 return;
             }
         }
-        _notificationsList.add(newNotification);
+        _notificationsList.add(notification);
     }
 
-
-    public int compareTo(Client c) {
-        return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
+    public void deleteNotifications(){
+        _notificationsList = new ArrayList<Notification>();
     }
 
     public List<Notification> getNotificationsList() {
         return new ArrayList<>( _notificationsList );
     }
-    
+
+
+
+    public int compareTo(Client c) {
+        return _key.toLowerCase().compareTo(c.getKey().toLowerCase());
+    }
 
     public String toString(){
 
@@ -226,9 +226,6 @@ public class Client implements Serializable, Comparable<Client> {
             Math.round(getClientDebt());
 
         return str;
-    }
-    public void deleteNotifications(){
-        _notificationsList = new ArrayList<Notification>();
     }
 
 }

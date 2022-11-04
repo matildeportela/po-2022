@@ -15,7 +15,7 @@ abstract class Communication {
     private boolean _isOngoing;
     private CommunicationType _type;
 
-    public Communication(int id, Terminal origin, Terminal destination, CommunicationType type){
+    Communication(int id, Terminal origin, Terminal destination, CommunicationType type){
         _id = id;
         _origin = origin;
         _destination = destination;

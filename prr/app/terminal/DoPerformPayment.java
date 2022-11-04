@@ -23,6 +23,7 @@ class DoPerformPayment extends TerminalCommand {
       _network.makePayment(_receiver, commKey);
     } catch (Exception e) {
       _display.add(Message.invalidCommunication());
+      _display.display();
     }
 
 

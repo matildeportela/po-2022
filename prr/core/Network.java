@@ -340,7 +340,7 @@ public class Network implements Serializable {
         for(Terminal t : C.getTerminalList()){
           for(Communication c: t.getReceivedCommunication()){
             communicationsToClient.add(c);
-            
+
           }
         }
         return communicationsToClient;
@@ -395,7 +395,6 @@ public class Network implements Serializable {
       throw new TerminalIsSilentException( toKey );
     }
     if(from.getId().equals( toKey )) {
-      //todo: o que fazer se o from e o to forem o mesmo?!?!
       throw new UnsuportedCommunication( toKey );
     }
 
@@ -422,11 +421,14 @@ public class Network implements Serializable {
     return 0;
   }
 
-  protected void subscribeFailedContact( Client from, Client to, String toTerminalKey) {
-    to.subscribe(
-       new NotificationSubscriber(from, toTerminalKey)
-    );
+  protected void subscribeFailedContact( Client subscriberClient, Client listenTo, String toTerminalKey) {
+
+    NotificationDeliveryMethod deliveryMethod = new DefaultNotificationDeliveryMethod(subscriberClient);
+
+    listenTo.subscribe(new NotificationSubscriber(subscriberClient, toTerminalKey, deliveryMethod));
   }
+
+
 
   protected void registerCommunication( Communication comm )
   {

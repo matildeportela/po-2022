@@ -11,7 +11,6 @@ enum TerminalState{
   IDLE,
   OFF,
   SILENCE,
-  OCCUPIED,
   BUSY,
 }
 
@@ -72,19 +71,19 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   protected void triggerStateChangeEvent( TerminalState fromState, TerminalState toState ) {
       
     if(fromState == TerminalState.BUSY && toState == TerminalState.IDLE) {
-      getOwner().notifySubscribers(this, NotificationType.B2I);
+      getOwner().sendNotification( new Notification( NotificationType.B2I, this.getId() ));
     }
 
     else if(fromState == TerminalState.SILENCE && toState == TerminalState.IDLE) {
-      getOwner().notifySubscribers(this, NotificationType.S2I);
+      getOwner().sendNotification( new Notification(NotificationType.S2I, this.getId() ));
     }
 
     else if(fromState == TerminalState.OFF && toState == TerminalState.IDLE) {
-      getOwner().notifySubscribers(this, NotificationType.O2I);
+      getOwner().sendNotification( new Notification(NotificationType.O2I, this.getId() ));
 
     }
     else if(fromState == TerminalState.OFF && toState == TerminalState.SILENCE) {
-      getOwner().notifySubscribers(this, NotificationType.O2S);
+      getOwner().sendNotification( new Notification(NotificationType.O2S, this.getId() ));
 
     }
   }
@@ -106,7 +105,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     }
   } 
   public void turnOff() {
-    if (getState() != TerminalState.OCCUPIED){
+    if (getState() != TerminalState.BUSY){
       changeStateTo(TerminalState.OFF);
     }
   }
