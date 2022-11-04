@@ -6,7 +6,6 @@ import prr.app.exception.UnknownTerminalKeyException;
 import prr.core.exception.*;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for starting communication.
@@ -27,7 +26,19 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 
     try {
       _network.startInteractiveCommunication(_receiver, destTerminalKey, commType);
-    } catch (TerminalOffException toe) {
+    }
+    catch (TerminalNotFoundException tnfe) {
+      throw new UnknownTerminalKeyException(destTerminalKey);
+    }
+    catch (UnsuportedCommunicationAtOrigin uco) {
+      _display.add(Message.unsupportedAtOrigin(_receiver.getId(), commType));
+      _display.display();
+    }
+    catch (UnsuportedCommunicationAtDestination ucd) {
+      _display.add(Message.unsupportedAtDestination(destTerminalKey, commType));
+      _display.display();
+    }
+    catch (TerminalOffException toe) {
       //se terminal de destino isOff ... mostra mensagem destinationIsOff
       _display.add(Message.destinationIsOff(destTerminalKey));
       _display.display();
@@ -42,14 +53,12 @@ class DoStartInteractiveCommunication extends TerminalCommand {
       _display.add(Message.destinationIsSilent(destTerminalKey));
       _display.display();
     }
+    catch (UnsuportedCommunication e) {
+      //todo: o que fazer quando o terminal tentar ligar para si proprio????
+    }
     catch (UnknownCommunicationType e){
       //todo: ????
     }
-    catch (TerminalNotFoundException tnfe) {
-      throw new UnknownTerminalKeyException(destTerminalKey);
-    }
 
-    //todo: se o terminal de origem não suportar interactive .. unsupportedAtOrigin
-    //todo: se o terminal de destino não suportar interactive .. unsupportedAtDestination
   }
 }

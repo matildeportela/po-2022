@@ -10,9 +10,6 @@ import prr.app.exception.InvalidTerminalKeyException;
 import java.util.Collections;
 import java.util.Comparator;
 
-
-// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
-
 /**
  * Class Store implements a store.
  */
@@ -20,8 +17,7 @@ public class Network implements Serializable {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202208091753L;
-  
-  // FIXME define attributes
+
   private double _balance;
   private List<Client> _clientList;
   private double _payment;
@@ -35,7 +31,6 @@ public class Network implements Serializable {
 
 
 
-  // FIXME define contructor(s)
   public Network(){
       _clientList = new ArrayList<Client> ();
       _allTerminals = new ArrayList<Terminal>();
@@ -59,7 +54,7 @@ public class Network implements Serializable {
     return _balance;
   }
 
-  public void addClient(Client c){
+  protected void addClient(Client c){
     _clientList.add(c);
   }
 
@@ -90,12 +85,8 @@ public class Network implements Serializable {
         }
       }
     });
-        
-      
-    
-    return inDebtClientList;
-  
 
+    return inDebtClientList;
   }
 
   public List<Client> getClientsWithoutDebt(){
@@ -158,22 +149,15 @@ public class Network implements Serializable {
   }
 
   public List<Terminal> getTerminals(){
-    return _allTerminals;
-  }
-  public List<Terminal> getSortedTerminals(){
-    
-    
     return sortTerminalList(_allTerminals);
   }
-  public static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
+
+  protected static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
     Collections.sort(listaTerminais);
     return listaTerminais;
   }
 
-   
-  
-
-  public void addTerminal(Terminal t){
+  protected void addTerminal(Terminal t){
     _allTerminals.add(t);
   }
 
@@ -276,7 +260,7 @@ public class Network implements Serializable {
    * @throws UnrecognizedEntryException if some entry is not correct
    * @throws IOException if there is an IO erro while processing the text file
    */
-  void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
+  void importFile(String filename) throws UnrecognizedEntryException, IOException  {
     Parser parser;
 
     parser = new Parser(this);
@@ -293,7 +277,7 @@ public class Network implements Serializable {
     Terminal destination = getTerminal(toKey);
 
     if(destination.isOff()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalOffException( toKey );
     }
 
@@ -308,25 +292,35 @@ public class Network implements Serializable {
   }
 
   public void startInteractiveCommunication(Terminal from, String toKey, String type)
-          throws TerminalNotFoundException, TerminalOffException, TerminalBusyException, TerminalIsSilentException, UnknownCommunicationType
+          throws TerminalNotFoundException, TerminalOffException, TerminalBusyException, TerminalIsSilentException, UnknownCommunicationType, UnsuportedCommunication, UnsuportedCommunicationAtOrigin, UnsuportedCommunicationAtDestination
   {
 
-    //todo: se o terminal de origem não suportar interactive .. unsupportedAtOrigin
-    //todo: se o terminal de destino não suportar interactive .. unsupportedAtDestination
+    if(!from.supportsCommunicationType(type)) {
+      //se o terminal de origem não suportar interactive .. unsupportedAtOrigin
+      throw new UnsuportedCommunicationAtOrigin( from.getId() );
+    }
 
     Terminal destination = getTerminal(toKey);
 
+    if(!destination.supportsCommunicationType(type)) {
+      //se o terminal de destino não suportar interactive .. unsupportedAtDestination
+      throw new UnsuportedCommunicationAtDestination( toKey );
+    }
     if(destination.isOff()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalOffException( toKey );
     }
     if(destination.isBusy()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalBusyException( toKey );
     }
     if(destination.isSilent()) {
-      destination.getOwner().subscribe(new NotificationSubscriber(from.getOwner(), toKey));
+      subscribeFailedContact(from.getOwner(), destination.getOwner(), toKey);
       throw new TerminalIsSilentException( toKey );
+    }
+    if(from.getId().equals( toKey )) {
+      //todo: o que fazer se o from e o to forem o mesmo?!?!
+      throw new UnsuportedCommunication( toKey );
     }
 
     InteractiveCommunication comm = InteractiveCommunicationFactory.make(type, getNextCommId(), from, destination );
@@ -350,6 +344,12 @@ public class Network implements Serializable {
 
     }
     return 0;
+  }
+
+  protected void subscribeFailedContact( Client from, Client to, String toTerminalKey) {
+    to.subscribe(
+       new NotificationSubscriber(from, toTerminalKey)
+    );
   }
 
   protected void registerCommunication( Communication comm )

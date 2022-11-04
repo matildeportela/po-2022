@@ -62,7 +62,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
   
 
-  public void triggerStateChangeEvent( TerminalState fromState, TerminalState toState ) {
+  protected void triggerStateChangeEvent( TerminalState fromState, TerminalState toState ) {
       
     if(fromState == TerminalState.BUSY && toState == TerminalState.IDLE) {
       getOwner().notifySubscribers(this, NotificationType.B2I);
@@ -81,44 +81,41 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
     }
   }
+
+  protected void changeStateTo(TerminalState toState) {
+    TerminalState fromState = getState();
+    _state = toState;
+    triggerStateChangeEvent(fromState, toState);
+  }
   
 
   public void setOnSilent() {
-      TerminalState fromState = _state;
-      _state = TerminalState.SILENCE;
-      triggerStateChangeEvent(fromState, _state);
-  } 
+    changeStateTo(TerminalState.SILENCE);
+  }
+
   public void turnOffSilent() {
-    if (_state == TerminalState.SILENCE) {
-      TerminalState fromState = _state;
-      _state = TerminalState.IDLE;
-      triggerStateChangeEvent(fromState, _state);
+    if (getState() == TerminalState.SILENCE) {
+      changeStateTo(TerminalState.IDLE);
     }
   } 
   public void turnOff() {
-    if (_state != TerminalState.OCCUPIED){
-      _state = TerminalState.OFF;
+    if (getState() != TerminalState.OCCUPIED){
+      changeStateTo(TerminalState.OFF);
     }
   }
   public void turnOn(){
-      TerminalState fromState = _state;
-      _state = TerminalState.IDLE;
-      triggerStateChangeEvent(fromState, _state);
-  }
-
-  public void endOngoingCommunication(){
-      TerminalState fromState = _state;
-      resetOngoingCommunication();
-      _state = getPreviousState();
-      triggerStateChangeEvent(fromState, _state);
+    changeStateTo(TerminalState.IDLE);
   }
 
   public void startOngoingCommunication(InteractiveCommunication comm ){
-      storePreviousState(_state);
-      TerminalState fromState = _state;
-      setOngoingCommunication(comm);
-      _state = TerminalState.BUSY;
-      triggerStateChangeEvent(fromState, _state);
+    storePreviousState( getState() );
+    setOngoingCommunication(comm);
+    changeStateTo( TerminalState.BUSY );
+  }
+
+  public void endOngoingCommunication(){
+    resetOngoingCommunication();
+    changeStateTo( getPreviousState() );
   }
 
   public long getTerminalDebts(){
@@ -132,11 +129,11 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   public InteractiveCommunication getOngoingCommunication() {
     return _ongoingCommunication;
   }
-  public void setOngoingCommunication(InteractiveCommunication comm ) {
+  protected void setOngoingCommunication(InteractiveCommunication comm ) {
     _ongoingCommunication = comm;
   }
 
-  public void resetOngoingCommunication() {
+  protected void resetOngoingCommunication() {
     _ongoingCommunication = null;   //todo: usar padrão de null_object?!?!
   }
 
@@ -144,33 +141,30 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _ongoingCommunication != null;
   }
 
-  public TerminalState getPreviousState(){
+  protected TerminalState getPreviousState(){
     return _previousState;
   }
 
-  public void storePreviousState(TerminalState previousState){
+  protected void storePreviousState(TerminalState previousState){
     _previousState = previousState;
   }
 
-
-
-
   public boolean isOff(){
-    return (_state == TerminalState.OFF);
+    return (getState() == TerminalState.OFF);
   }
   public boolean isOn(){
-    return (_state != TerminalState.OFF);
+    return (getState() != TerminalState.OFF);
   }
   public boolean isSilent(){
-    return (_state == TerminalState.SILENCE);
+    return (getState() == TerminalState.SILENCE);
   }
 
   public boolean isIdle(){
-    return (_state == TerminalState.IDLE);
+    return (getState() == TerminalState.IDLE);
   }
 
   public boolean isBusy() {
-    return hasOngoingCommunication(); //todo: _state == TerminalState.BUSY ????
+    return (getState() == TerminalState.BUSY);
   }
 
   public boolean isActive(){
@@ -184,6 +178,17 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     }
     return false;
   }
+
+  public boolean supportsCommunicationType(String commType) {
+
+    if(getType()==TerminalType.BASIC && commType.equals( "VIDEO" ) ) {
+      return false;
+    }
+
+    return true;
+
+  }
+
   public String getId(){
     return _id;
   }
@@ -196,8 +201,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _friends;
   }
 
-  public TerminalState getTerminalState() {
-    if(isBusy()) return TerminalState.BUSY;
+  public TerminalState getState() {
     return _state;
   }
 
@@ -222,10 +226,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     _friends.add(f);
   }
 
-  public void removeFriendById(String friendId ) throws UnknownTerminalKeyException {
+  public void removeFriend( String friendId ) throws UnknownTerminalKeyException {
     boolean didRemove = false;
     for (Terminal t: _friends){
-      
       if (t.getId().equals(friendId)){
         _friends.remove(t);
         didRemove = true;
@@ -237,22 +240,8 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
       throw new UnknownTerminalKeyException(friendId);
     }
   }
-
-  public void removeFriend(Terminal f) throws UnknownTerminalKeyException {
-    boolean didRemove = false;
-    for (Terminal t: _friends){
-      if (t.getId().equals(f.getId())){
-        _friends.remove(f);
-        didRemove = true;
-        break;
-      }
-    }
-    if (!didRemove) {
-      throw new UnknownTerminalKeyException(f.getId());
-    }
-  }
   
-  public List<String> getSortedFriendsListIds(){
+  protected List<String> getSortedFriendsListIds(){
     ArrayList<String> orderedList = new ArrayList<String>();
     Collections.sort(_friends);
     for (Terminal t : _friends){
@@ -271,15 +260,15 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     addDebt( comm.getCost() ); //todo: confirmar se é só isto
   }
 
-  public void addMadeCommunication( Communication comm ) {
+  protected void addMadeCommunication( Communication comm ) {
     _madeCommunications.add(comm);
   }
 
-  public void addReceivedCommunication( Communication comm ) {
+  protected void addReceivedCommunication( Communication comm ) {
     _receivedCommunications.add(comm);
   }
 
-  public void addDebt( double value ) {
+  protected void addDebt( double value ) {
     _debt += value;
   }
 
@@ -312,7 +301,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     getType() +"|"+
     getId() +"|"+
     getOwner().getKey() +"|"+
-    getTerminalState() +"|"+
+    getState() +"|"+
     Math.round(getTerminalPayments()) +"|"+
     Math.round(getTerminalDebts());
 
