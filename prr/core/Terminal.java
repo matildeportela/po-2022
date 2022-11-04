@@ -42,8 +42,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   private InteractiveCommunication _ongoingCommunication; //todo??
 
 
-
-  public Terminal(String id, Client owner, TerminalType type){
+  protected Terminal(String id, Client owner, TerminalType type){
     _id = id;
     _owner = owner;
     _payment = 0;

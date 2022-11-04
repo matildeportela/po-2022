@@ -25,8 +25,7 @@ public class Client implements Serializable, Comparable<Client> {
     private ClientType _type;
     private List<SubscriberInterface> _subscribersList;
     private List<Notification> _notificationsList;
-    
-    
+
     public Client(String key, String name, int fiscalNumber){
         _key = key;
         _name = name;
@@ -81,7 +80,7 @@ public class Client implements Serializable, Comparable<Client> {
     public int getActiveTerminalsCount(){
         int n = 0;
 
-        for(Terminal i : getTerminalList()){
+        for(Terminal i : _terminalList){
             if(i.isActive()){
                 n++;
             }

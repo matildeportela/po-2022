@@ -3,11 +3,12 @@ package prr.core;
 class TextCommunication extends Communication {
     private String _message;
 
-    public TextCommunication(int id, Terminal origin, Terminal destination, String message){
+    TextCommunication(int id, Terminal origin, Terminal destination, String message){
         super(id, origin, destination, CommunicationType.TEXT);
         setMessage(message);
     }
-    public void setMessage(String message){
+
+    private void setMessage(String message){
         _message = message;
         
     }
@@ -16,17 +17,16 @@ class TextCommunication extends Communication {
     }
 
     @Override
-    public double computeCost(Plan plan) {
-        
+    protected double computeCost(Plan plan) {
         return plan.computeTextCost(getClient(), this);
     }
 
-    public int getSize(){
+    int getSize(){
         return _message.length();
     }
 
     @Override
-    public boolean isOngoingCommunication() {
+    protected boolean isOngoingCommunication() {
         return false;
     }
 }

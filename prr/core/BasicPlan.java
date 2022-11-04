@@ -2,7 +2,7 @@ package prr.core;
 
 class BasicPlan extends Plan {
 
-    public double computeTextCost(Client c, TextCommunication communication){
+    protected double computeTextCost(Client c, TextCommunication communication){
         int textLength = communication.getSize();
         double cost = 0;
         switch(c.getType()){
@@ -40,7 +40,7 @@ class BasicPlan extends Plan {
         return cost;
     }
 
-    public double computeVoiceCost(Client c, VoiceCommunication communication){
+    protected double computeVoiceCost(Client c, VoiceCommunication communication){
         int duration = communication.getSize();
         double cost = 0;
         switch(c.getType()){
@@ -63,7 +63,7 @@ class BasicPlan extends Plan {
         
     }
 
-    public double computeVideoCost(Client c, VideoCommunication communication){
+    protected double computeVideoCost(Client c, VideoCommunication communication){
         int duration = communication.getSize();
         double cost = 0;
         switch(c.getType()){

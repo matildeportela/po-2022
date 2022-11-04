@@ -3,7 +3,7 @@ package prr.core;
 import prr.core.exception.UnknownCommunicationType;
 
 class InteractiveCommunicationFactory {
-    public static InteractiveCommunication make(String type, int id, Terminal from, Terminal to) throws UnknownCommunicationType {
+    static InteractiveCommunication make(String type, int id, Terminal from, Terminal to) throws UnknownCommunicationType {
         InteractiveCommunication comm;
         switch (type) {
             case "VOICE":
@@ -14,7 +14,6 @@ class InteractiveCommunicationFactory {
                 break;
             default:
                 throw new UnknownCommunicationType(type);
-                //todo: trow exception unknown type
         }
         return comm;
     }
