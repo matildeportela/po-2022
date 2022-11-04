@@ -1,6 +1,5 @@
 package prr.core;
 import java.io.Serializable;
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -138,7 +137,7 @@ public class Client implements Serializable, Comparable<Client> {
     public int getActiveTerminalsCount(){
         int n = 0;
 
-        for(Terminal i : getTerminalList()){
+        for(Terminal i : _terminalList){
             if(i.isActive()){
                 n++;
             }
@@ -147,7 +146,7 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public int getTerminalsCount(){
-        return getTerminalList().size();
+        return _terminalList.size();
     }
     
     public boolean hasNotificationsEnabled(){
