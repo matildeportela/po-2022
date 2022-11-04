@@ -54,7 +54,7 @@ public class Network implements Serializable {
     return _balance;
   }
 
-  public void addClient(Client c){
+  protected void addClient(Client c){
     _clientList.add(c);
   }
 
@@ -85,12 +85,8 @@ public class Network implements Serializable {
         }
       }
     });
-        
-      
-    
-    return inDebtClientList;
-  
 
+    return inDebtClientList;
   }
 
   public List<Client> getClientsWithoutDebt(){
@@ -153,22 +149,15 @@ public class Network implements Serializable {
   }
 
   public List<Terminal> getTerminals(){
-    return _allTerminals;
-  }
-  public List<Terminal> getSortedTerminals(){
-    
-    
     return sortTerminalList(_allTerminals);
   }
-  public static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
+
+  protected static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
     Collections.sort(listaTerminais);
     return listaTerminais;
   }
 
-   
-  
-
-  public void addTerminal(Terminal t){
+  protected void addTerminal(Terminal t){
     _allTerminals.add(t);
   }
 
