@@ -7,8 +7,6 @@ import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
 
-//FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
-
 /**
  * Manage access to network and implement load/save operations.
  */
@@ -17,8 +15,6 @@ public class NetworkManager {
   /** The network itself. */
   private Network _network = new Network();
   private String _networkFilename = "";
-
-  //FIXME  addmore fields if needed
   
   public Network getNetwork() {
     return _network;
@@ -31,7 +27,6 @@ public class NetworkManager {
    *         an error while processing this file.
    */
   public void load(String filename) throws UnavailableFileException {
-    //FIXME implement serialization method
     ObjectInputStream objectIn = null;
 
     try {
@@ -61,7 +56,6 @@ public class NetworkManager {
    * @throws IOException if there is some error while serializing the state of the network to disk.
    */
   public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
-    //FIXME implement serialization method
     saveAs(getNetworkFilename());
   }
   
@@ -111,7 +105,7 @@ public class NetworkManager {
   public void importFile(String filename) throws ImportFileException {
     try {
       _network.importFile(filename);
-    } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+    } catch (IOException | UnrecognizedEntryException e) {
       throw new ImportFileException(filename, e);
     }
   }  

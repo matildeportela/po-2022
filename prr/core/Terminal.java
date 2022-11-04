@@ -180,6 +180,17 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     }
     return false;
   }
+
+  public boolean supportsCommunicationType(String commType) {
+
+    if(getType()==TerminalType.BASIC && commType.equals( "VIDEO" ) ) {
+      return false;
+    }
+
+    return true;
+
+  }
+
   public String getId(){
     return _id;
   }
