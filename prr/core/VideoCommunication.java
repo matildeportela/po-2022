@@ -1,6 +1,6 @@
 package prr.core;
 
-public class VideoCommunication extends InteractiveCommunication{
+class VideoCommunication extends InteractiveCommunication{
 
     public VideoCommunication(int id, Terminal origin, Terminal destination){
         super(id, origin, destination, CommunicationType.VIDEO);

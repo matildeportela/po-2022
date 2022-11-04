@@ -7,7 +7,7 @@ enum NotificationType{
     B2I
 }
 
-public class Notification {
+class Notification {
     private NotificationType _type;
     private String _terminalKey;
     public Notification(NotificationType type, String terminalKey){

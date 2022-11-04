@@ -1,4 +1,5 @@
 package prr.core;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class Network implements Serializable {
       _communicationAutoIncrement = 0;
       _storedCommAutoIncrement = 0;
       _pricingPlan = new BasicPlan();
+
   }
   
   /**
@@ -62,7 +64,7 @@ public class Network implements Serializable {
 
   public List<Client> getSortedClients(){
     Collections.sort(_clientList);    
-    return _clientList;
+    return new ArrayList<>( _clientList );
   }
   public List<Client> getInDebtClients(){
     List<Client> inDebtClientList = new ArrayList<Client> ();
@@ -98,6 +100,7 @@ public class Network implements Serializable {
     }
     return clientsWithoutDebt;
   }
+
   public List<Terminal> getPositiveTerminals(){
     ArrayList<Terminal> positiveTerminalList = new ArrayList<Terminal> ();
     for( Terminal t : _allTerminals){
@@ -105,7 +108,7 @@ public class Network implements Serializable {
         positiveTerminalList.add(t);
       }
     }
-    return sortTerminalList(positiveTerminalList);
+    return new ArrayList<>( sortTerminalList(positiveTerminalList) );
   }
 
   /**
@@ -149,7 +152,7 @@ public class Network implements Serializable {
   }
 
   public List<Terminal> getTerminals(){
-    return sortTerminalList(_allTerminals);
+    return new ArrayList<>( sortTerminalList(_allTerminals) );
   }
 
   protected static List<Terminal> sortTerminalList(List<Terminal> listaTerminais){
@@ -269,7 +272,7 @@ public class Network implements Serializable {
   }
 
   public List<Communication> getCommunications() {
-      return _communicationList; //todo: return a cloned object
+      return new ArrayList<>(_communicationList);
   }
 
   public void sendTextCommunication(Terminal from, String toKey, String msg) throws TerminalNotFoundException, TerminalOffException

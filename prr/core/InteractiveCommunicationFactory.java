@@ -2,7 +2,7 @@ package prr.core;
 
 import prr.core.exception.UnknownCommunicationType;
 
-public class InteractiveCommunicationFactory {
+class InteractiveCommunicationFactory {
     public static InteractiveCommunication make(String type, int id, Terminal from, Terminal to) throws UnknownCommunicationType {
         InteractiveCommunication comm;
         switch (type) {

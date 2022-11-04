@@ -1,6 +1,6 @@
 package prr.core;
 
-public interface SubscriberInterface {
+interface SubscriberInterface {
     public void createNotification(String terminalKey, NotificationType type);
     
 }

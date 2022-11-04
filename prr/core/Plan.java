@@ -1,6 +1,6 @@
 package prr.core;
 
-abstract public class Plan {
+abstract class Plan {
 
     public abstract double computeTextCost(Client c, TextCommunication communication);
 

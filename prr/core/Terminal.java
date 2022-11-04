@@ -198,7 +198,7 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
   }
 
   public List<Terminal> getFriends(){
-    return _friends;
+    return new ArrayList<>(_friends);
   }
 
   public TerminalState getState() {

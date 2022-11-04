@@ -1,6 +1,6 @@
 package prr.core;
 
-public class NotificationSubscriber implements SubscriberInterface {
+class NotificationSubscriber implements SubscriberInterface {
     private Client _notifyClient;
     private String _terminalKey;
     public NotificationSubscriber(Client notifyClient, String terminalKey){

@@ -75,7 +75,7 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public List<Terminal> getTerminalList(){
-        return _terminalList;
+        return new ArrayList<>( _terminalList );
     }
 
     public int getActiveTerminalsCount(){
@@ -138,7 +138,7 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public List<Notification> getNotificationsList() {
-        return _notificationsList;
+        return new ArrayList<>( _notificationsList );
     }
     
 

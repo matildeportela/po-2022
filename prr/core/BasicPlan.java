@@ -1,6 +1,6 @@
 package prr.core;
 
-public class BasicPlan extends Plan {
+class BasicPlan extends Plan {
 
     public double computeTextCost(Client c, TextCommunication communication){
         int textLength = communication.getSize();

@@ -6,7 +6,7 @@ enum CommunicationType{
     VOICE
 }
 
-abstract public class Communication {
+abstract class Communication {
     private int _id;
     private Terminal _origin;
     private Terminal _destination;

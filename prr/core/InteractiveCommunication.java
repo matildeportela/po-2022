@@ -1,6 +1,6 @@
 package prr.core;
 
-abstract public class InteractiveCommunication extends Communication{
+abstract class InteractiveCommunication extends Communication{
     /* Duração da comunicação em minutos */
     private int _communicationDuration;
     private boolean _isOngoing;

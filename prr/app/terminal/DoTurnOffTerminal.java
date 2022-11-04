@@ -23,10 +23,7 @@ class DoTurnOffTerminal extends TerminalCommand {
       _display.display();
     }
     else{
-      
       _receiver.turnOff();
-      
-
     }
     
   }
