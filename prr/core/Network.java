@@ -52,7 +52,20 @@ public class Network implements Serializable {
     }
     return totalPayments - totalDebts;
   }
-     
+  public long getTotalPayments(){
+    long totalPayments = 0;
+    for(Client c : _clientList){
+      totalPayments += c.getClientPayment();
+    }
+    return totalPayments;
+  }
+  public long getTotalDebts(){
+    long totalDebts = 0;
+    for(Client c : _clientList){
+      totalDebts += c.getClientDebt();
+    }
+    return totalDebts;
+  }
       
       
    
