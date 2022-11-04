@@ -121,9 +121,15 @@ public class Client implements Serializable, Comparable<Client> {
         }
     }
     public void addNotification(String terminalKey, NotificationType type){
-        Notification n = new Notification(type, terminalKey);
-        _notificationsList.add(n);//todo verificar se ja ha n na lista de notificações;
+        Notification newNotification = new Notification(type, terminalKey);
 
+        for(Notification n : _notificationsList) {
+            if(n.toString().equals(newNotification.toString())) {
+                //se já existir uma notificação igual... sai sem adicionar
+                return;
+            }
+        }
+        _notificationsList.add(newNotification);
     }
 
 
