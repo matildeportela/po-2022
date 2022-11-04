@@ -47,6 +47,14 @@ abstract class Communication {
         return _type;
     }
 
+    public boolean isPaid(){
+        return _isPaid;
+    }
+
+    public boolean isOngoing(){
+        return _isOngoing;
+    }
+
     public boolean isInteractive() {
         return (getType() == CommunicationType.VOICE || getType() == CommunicationType.VIDEO);
     }
