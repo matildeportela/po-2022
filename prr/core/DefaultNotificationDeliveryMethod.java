@@ -2,7 +2,7 @@ package prr.core;
 
 import java.io.Serializable;
 
-public class DefaultNotificationDeliveryMethod implements NotificationDeliveryMethod, Serializable {
+class DefaultNotificationDeliveryMethod implements NotificationDeliveryMethod, Serializable {
 
     Client _destinationClient;
 

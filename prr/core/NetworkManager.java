@@ -1,11 +1,11 @@
 package prr.core;
 
-import java.io.*;
-
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
+
+import java.io.*;
 
 /**
  * Manage access to network and implement load/save operations.

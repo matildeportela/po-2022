@@ -11,7 +11,7 @@ class NotificationSubscriber implements Subscriber, Serializable {
     NotificationSubscriber(Client notifyClient, String terminalKey, NotificationDeliveryMethod deliveryMethod){
         _notifyClient = notifyClient;
         _terminalKey = terminalKey;
-        _notificationDeliveryMethod = deliveryMethod;
+        setDeliveryMethod(deliveryMethod);
     }
 
     @Override

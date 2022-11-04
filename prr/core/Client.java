@@ -1,9 +1,8 @@
 package prr.core;
+
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Queue;
 
 enum ClientType{
     NORMAL,
@@ -42,7 +41,7 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
         _lastCommType = null;
     }
 
-    public long getClientPayment(){
+    long getClientPayment(){
         long clientPayments = 0;
         for(Terminal t: _terminalList){
             clientPayments += t.getTerminalPayments();
@@ -51,7 +50,7 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
         return clientPayments;
     }
 
-    public long getClientDebt(){
+    long getClientDebt(){
         long clientDebts = 0;
         for(Terminal t: _terminalList){
             clientDebts += t.getTerminalDebts();
@@ -60,41 +59,41 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
         return clientDebts;
     }
         
-    public String getKey(){
+    String getKey(){
         return _key;
     }
 
-    public String getName(){
+    String getName(){
         return _name;
     }
 
-    public int getFiscalNumber(){
+    int getFiscalNumber(){
         return _fiscalNumber;
     }
 
-    public long getBalance(){
+    long getBalance(){
         return getClientPayment() - getClientDebt();
         
     }
 
-    public ClientType getType(){
+    ClientType getType(){
         return _type;
     }
 
-    public boolean hasDebt(){
+    boolean hasDebt(){
         return (getBalance() < 0);
     }
 
-    public int getNumOfConsecutiveVideoCalls(){
+    private int getNumOfConsecutiveVideoCalls(){
         return _consecutiveVideoCalls + 1;
     }
 
-    public int getNumOfConsecutiveTextMessages(){
+    private int getNumOfConsecutiveTextMessages(){
         return _consecutiveTextMessages + 1;
     }
 
 
-    public void updateConsecutiveCalls( CommunicationType commType ) {
+    void updateConsecutiveCalls( CommunicationType commType ) {
 
         if( commType == _lastCommType && commType == CommunicationType.VIDEO ) {
             _consecutiveVideoCalls++;
@@ -112,7 +111,7 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
 
     }
 
-    public void reEvaluateClientPlan(){
+    void reEvaluateClientPlan(){
         long balance = getBalance();
 
         if (_type == ClientType.NORMAL){
@@ -143,26 +142,15 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
     }
 
     
-    public void addTerminal(Terminal t){
+    void addTerminal(Terminal t){
         _terminalList.add(t);
     }
 
-    public List<Terminal> getTerminalList(){
+    List<Terminal> getTerminalList(){
         return new ArrayList<>( _terminalList );
     }
 
-    public int getActiveTerminalsCount(){
-        int n = 0;
-
-        for(Terminal i : getTerminalList()){
-            if(i.isActive()){
-                n++;
-            }
-        }
-        return n;
-    }
-
-    public int getTerminalsCount(){
+    private int getTerminalsCount(){
         return getTerminalList().size();
     }
     
@@ -178,7 +166,7 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
         _notifications = false;
     }
 
-    public String getNotificationStatus() {
+    private String getNotificationStatus() {
         if(hasNotificationsEnabled()) return "YES";
         return "NO";
     }
@@ -200,7 +188,7 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
     }
 
 
-    public void addToNotificationList(Notification notification) {
+    void addToNotificationList(Notification notification) {
         for(Notification n : _notificationsList) {
             if(n.toString().equals(notification.toString())) {
                 //se já existir uma notificação igual... sai sem adicionar
@@ -239,7 +227,5 @@ public class Client implements Serializable, Comparable<Client>, Subscribable {
 
         return str;
     }
-
-
 
 }
