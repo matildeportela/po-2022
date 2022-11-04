@@ -17,8 +17,6 @@ public class Client implements Serializable, Comparable<Client> {
     private String _key;
     private String _name;
     private int _fiscalNumber;
-    private double _payment;
-    private double _debt;
     private boolean _notifications;
     private double _balance;
     private List<Terminal> _terminalList;
@@ -37,13 +35,25 @@ public class Client implements Serializable, Comparable<Client> {
         _subscribersList = new ArrayList<SubscriberInterface>();
     }
 
-    public double getClientPayment(){
-        return _payment;
+    public long getClientPayment(){
+        long clientPayments = 0;
+        for(Terminal t: _terminalList){
+            clientPayments += t.getTerminalPayments();
+
+        }
+        return clientPayments;
     }
 
-    public double getClientDebt(){
-        return _debt;
+    public long getClientDebt(){
+        long clientDebts = 0;
+        for(Terminal t: _terminalList){
+            clientDebts += t.getTerminalDebts();
+
+        }
+        return clientDebts;
     }
+        
+    
     public boolean hasDebt(){
         return (_balance < 0);
     }
@@ -61,7 +71,7 @@ public class Client implements Serializable, Comparable<Client> {
     }
 
     public double getBalance(){
-        _balance = _payment - _debt;
+        _balance = getClientPayment() - getClientDebt();
         return _balance;
     }
 

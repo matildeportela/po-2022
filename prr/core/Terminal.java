@@ -58,6 +58,10 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
     return _payment;
     
   }
+  public long addTerminalPayments(long p){
+    _payment += p;
+    return _payment;
+  }
 
   
 
@@ -119,6 +123,9 @@ abstract public class Terminal implements Serializable, Comparable<Terminal>  {
 
   public long getTerminalDebts(){
     return _debt;
+  }
+  public long addTerminalDebt(long d){
+    return _debt += d;
   }
 
   public long getTerminalBalance(){

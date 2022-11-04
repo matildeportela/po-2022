@@ -1,6 +1,8 @@
 package prr.app.client;
 
+import prr.app.exception.UnknownClientKeyException;
 import prr.core.Network;
+import prr.core.exception.ClientNotFoundException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 
@@ -11,12 +13,19 @@ import pt.tecnico.uilib.menus.CommandException;
 class DoShowClientPaymentsAndDebts extends Command<Network> {
 
   DoShowClientPaymentsAndDebts(Network receiver) {
-    super(Label.SHOW_CLIENT_BALANCE, receiver);
-    //FIXME add command fields
-  }
+    super(Label.SHOW_CLIENT_BALANCE, receiver); 
+    addStringField("key", Message.key());
+}
   
   @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
+  protected final void execute() throws CommandException, UnknownClientKeyException{
+    String key = stringField("key");
+    try{
+      _display.add(Message.clientPaymentsAndDebts(key, _receiver.getPaymentsFromClient(key), _receiver.getDebtsFromClient(key)));
+      _display.display();
+    }
+    catch(ClientNotFoundException cnfe){
+      throw new UnknownClientKeyException(key);
+    }
   }
 }

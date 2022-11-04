@@ -19,10 +19,8 @@ public class Network implements Serializable {
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202208091753L;
 
-  private double _balance;
+  
   private List<Client> _clientList;
-  private double _payment;
-  private double _debt;
   private List<Terminal> _allTerminals;
   private List<Communication> _communicationList;
   private static int _communicationAutoIncrement;
@@ -45,16 +43,41 @@ public class Network implements Serializable {
   /**
    * gets overall clients balance i.e. network balance
    */
-  public double getBalance(){
+  public long getBalance(){
+    long totalPayments = 0;
+    long totalDebts = 0;
     for(Client c : _clientList){
-      _payment += c.getClientPayment();
-      _debt += c.getClientDebt();
-      
-      
+      totalPayments += c.getClientPayment();
+      totalDebts += c.getClientDebt();
     }
-    _balance = _payment - _debt;
-    return _balance;
+    return totalPayments - totalDebts;
   }
+     
+      
+      
+   
+
+  public long getPaymentsFromClient(String key) throws ClientNotFoundException{
+    
+    for(Client c : _clientList){
+      if(c.getKey().equals(key)){
+        return c.getClientPayment();
+      }
+    }
+    throw new ClientNotFoundException(key);
+
+  }
+  public long getDebtsFromClient(String key) throws ClientNotFoundException{
+    
+    for(Client c : _clientList){
+      if(c.getKey().equals(key)){
+        return c.getClientDebt();
+      }
+    }
+    throw new ClientNotFoundException(key);
+
+  }
+  
 
   protected void addClient(Client c){
     _clientList.add(c);
